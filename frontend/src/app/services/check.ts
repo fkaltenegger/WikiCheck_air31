@@ -1,0 +1,39 @@
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ResultItem } from '../models/result.type';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CheckService {
+  data = signal<ResultItem[]>([]);
+  loading = signal(false);
+  error = signal<string | null>(null);
+
+  constructor(private http: HttpClient) {}
+
+  checkFactApi(method: string, query: string) {
+    this.loading.set(true);
+    this.error.set(null);
+
+    const body = { method, query };
+
+    this.http.post<ResultItem[]>('https://localhost:8000/check', body)
+      .subscribe({
+        next: (response: ResultItem[]) => {
+          this.data.set(response);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set('Failed to load data');
+          this.loading.set(false);
+        }
+      });
+  }
+
+}
+
+// Title, Url, Parapgrah where its most matchable
+
+// Top 3 Results
+

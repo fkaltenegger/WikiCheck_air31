@@ -1,0 +1,20 @@
+
+@if (checkService.loading()) { 
+    <p> Loading ... </p>
+}
+@else if (checkService.error()) {
+    <p>{{checkService.error()}}</p>
+}
+@else if (checkService.data().length > 0) {
+    @for (result of checkService.data(); track $index) {
+        <h2 class="text-3xl font-semibold text-primary mt-10">Top 3 Results</h2>
+        <div class="flex flex-col mt-5">
+            <div class="h-100 w-full bg-light border border-gray-400 p-10 rounded-2xl">
+                <h1>{{result.title}}</h1>
+                <h4>{{result.url}}</h4>
+                <p>{{result.paragraph}}</p>
+            </div>
+        </div>
+    }
+}
+@else {<p>No data</p>}
