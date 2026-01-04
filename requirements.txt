@@ -1,0 +1,9 @@
+transformers
+torch
+datasets
+scikit-learn
+numpy
+tqdm
+fastapi
+uvicorn[standard]
+python-multipart
