@@ -18,7 +18,7 @@ export class CheckService {
 
     const body = { method, query };
 
-    this.http.post<ResultItem[]>('https://localhost:8000/check', body)
+    this.http.post<ResultItem[]>('http://localhost:8000/check', body)
       .subscribe({
         next: (response: ResultItem[]) => {
           this.data.set(response);

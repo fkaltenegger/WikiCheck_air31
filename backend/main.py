@@ -182,17 +182,18 @@ def answer_query(query, top_k=TOP_K):
             "paragraph": paragraphs[idx],
         })
 
-    return {
-        "query": query,
-        "answer": paragraphs[best_idx],
-        "best_article": {
-            "title": para_titles[best_idx],
-            "url": para_urls[best_idx],
-            "score": float(scores[best_idx]),
-        },
-        "top_k_results": results,
-    }
+    # return {
+    #     # "query": query,
+    #     # "answer": paragraphs[best_idx],
+    #     # "best_article": {
+    #     #     "title": para_titles[best_idx],
+    #     #     "url": para_urls[best_idx],
+    #     #     "score": float(scores[best_idx]),
+    #     # },
+    #     "top_k_results": results,
+    # }
 
+    return results
 ### FastAPI App ###
 
 app = FastAPI(lifespan=lifespan)
@@ -213,13 +214,13 @@ class RequestBody(BaseModel):
 
 @app.post("/check")
 def health_check(r: RequestBody):
-    if r.method == "sbert":
+    if r.method.lower() == "sbert":
         if MODEL_NAME != "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2":
             switch_model("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
-    elif r.method == "mbert":
+    elif r.method.lower() == "mbert":
         if MODEL_NAME != "bert-base-multilingual-cased":
             switch_model("bert-base-multilingual-cased")
-    elif r.method == "tfidf":
+    elif r.method.lower() == "tf-idf":
         pass  # keep current model
     
     print(r)
