@@ -6,6 +6,7 @@ dependencies:
   - pip
   - pip:
       - transformers
+      - accelerate
       - torch
       - datasets
       - scikit-learn
@@ -14,3 +15,4 @@ dependencies:
       - fastapi
       - uvicorn[standard]
       - python-multipart
+      

@@ -1,0 +1,155 @@
+{
+  "Blue": {
+    "url": "https://en.wikipedia.org/wiki/Blue",
+    "claims": [
+      {
+        "language": "en",
+        "text": "Blue is one of the three primary colours"
+      },
+      {
+        "language": "de",
+        "text": "Blau ist eine der drei Grundfarben"
+      },
+      {
+        "language": "es",
+        "text": "El azul es uno de los tres colores primarios"
+      }
+    ]
+  },
+  "Brewing": {
+    "url": "https://en.wikipedia.org/wiki/Brewing",
+    "claims": [
+      {
+        "language": "en",
+        "text": "By-products are spent grain and the sediment from the filtration process which may be dried and resold as brewers dried yeast for poultry feed."
+      },
+      {
+        "language": "de",
+        "text": "Nebenprodukte sind Biertreber und das Sediment aus dem Filterprozess, das getrocknet und als Bierhefe für Geflügelfutter weiterverkauft werden kann."
+      },
+      {
+        "language": "es",
+        "text": "Los subproductos son el granado y el sedimento del proceso de filtración, que pueden secarse y revenderse como levadura seca de cerveza para la alimentación de aves de corral."
+      }
+    ]
+  },
+  "Bus": {
+    "url": "https://en.wikipedia.org/wiki/Bus",
+    "claims": [
+      {
+        "language": "en",
+        "text": "His transport scheme was a huge success, although not as he had intended as most of his passengers did not visit his spa."
+      },
+      {
+        "language": "de",
+        "text": "Sein Transportkonzept war ein großer Erfolg, wenn auch nicht ganz so, wie er es sich vorgestellt hatte, da die meisten seiner Fahrgäste sein Spa nicht besuchten."
+      },
+      {
+        "language": "de",
+        "text": "Sein Transportkonzept war ein großer Erfolg, wenn auch nicht ganz so, wie er es sich vorgestellt hatte, da die meisten seiner Fahrgäste sein Spa nicht besuchten."
+      }
+    ]
+  },
+  "Benjamin_Franklin": {
+    "url": "https://en.wikipedia.org/wiki/Benjamin_Franklin",
+    "claims": [
+      {
+        "language": "en",
+        "text": "Benjamin Franklin died at the age of 31"
+      },
+      {
+        "language": "de",
+        "text": "Benjamin Franklin starb im Alter von 31 Jahren"
+      },
+      {
+        "language": "es",
+        "text": "Benjamin Franklin murió a los 31 años"
+      }
+    ]
+  },
+  "Ball": {
+    "url": "https://en.wikipedia.org/wiki/Ball",
+    "claims": [
+      {
+        "language": "en",
+        "text": "A ball is a squared object"
+      },
+      {
+        "language": "de",
+        "text": "Ein Ball ist ein quadratisches Objekt"
+      },
+      {
+        "language": "es",
+        "text": "Una bola es un objeto cuadrado"
+      }
+    ]
+  },
+  "BMW": {
+    "url": "https://en.wikipedia.org/wiki/BMW",
+    "claims": [
+      {
+        "language": "en",
+        "text": "The global headquarter of BMW is in Boston"
+      },
+      {
+        "language": "de",
+        "text": "Der weltweite Hauptsitz von BMW befindet sich in Boston"
+      },
+      {
+        "language": "es",
+        "text": "La sede central mundial de BMW se encuentra en Boston"
+      }
+    ]
+  },
+  "Bosporus": {
+    "url": "https://en.wikipedia.org/wiki/Bosporus",
+    "claims": [
+      {
+        "language": "en",
+        "text": "The Bosporus Strait is located in Vienna"
+      },
+      {
+        "language": "de",
+        "text": "Die Bosporus-Meerenge befindet sich in Wien"
+      },
+      {
+        "language": "es",
+        "text": "El estrecho del Bósforo se encuentra en Viena"
+      }
+    ]
+  },
+  "Algeria": {
+    "url": "https://en.wikipedia.org/wiki/Algeria",
+    "claims": [
+      {
+        "language": "en",
+        "text": "The currency of Algeria is dollar"
+      },
+      {
+        "language": "de",
+        "text": "Die Währung Algeriens ist der Dollar"
+      },
+      {
+        "language": "es",
+        "text": "La moneda de Argelia es el dólar"
+      }
+    ]
+  },
+  "Brunei": {
+    "url": "https://en.wikipedia.org/wiki/Brunei",
+    "claims": [
+      {
+        "language": "en",
+        "text": "The climate in Brunei is dry"
+      },
+      {
+        "language": "de",
+        "text": "Das Klima in Brunei ist trocken"
+      },
+      {
+        "language": "es",
+        "text": "El clima en Brunei es seco"
+      }
+    ]
+  }
+}

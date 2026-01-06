@@ -3,7 +3,7 @@ from typing import List
 import numpy as np
 import torch
 from datasets import load_dataset
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel, LlamaTokenizer, LlamaForCausalLM
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
 import os
@@ -20,6 +20,7 @@ import json
 models = {"sbert": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", "mbert": "bert-base-multilingual-cased", "tf-idf": "tf-idf"}
 MODEL_NAME = models["sbert"]
 MODEL_RERANKER = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+MODEL_EVAL  = 'openlm-research/open_llama_3b_v2'
 
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -28,6 +29,8 @@ TOP_K = 5
 
 tokenizer = None
 model = None
+gpt_model = None
+gpt_tokenizer = None
 reranker = None
 
 tfidf_vectorizer = None
@@ -197,8 +200,10 @@ def switch_model(new_model_name, subset_size=2000):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
-        global reranker
+        global reranker, gpt_model, gpt_tokenizer
         reranker = CrossEncoder(MODEL_RERANKER, device=DEVICE)
+        gpt_tokenizer = LlamaTokenizer.from_pretrained(MODEL_EVAL)
+        gpt_model = LlamaForCausalLM.from_pretrained(MODEL_EVAL, dtype=torch.float16, use_safetensors=True).to(DEVICE)
         startup(subset_size=2000)
         print("Startup completed successfully")
         yield
@@ -214,10 +219,10 @@ def answer_query(query, top_k, rerank):
     query_emb = tfidf_vectorizer.transform([query]) if tfidf else encode_texts([query])
     scores = cosine_similarity(query_emb, tfidf_matrix if tfidf else paragraph_embeddings)[0]
 
-    top_indices = scores.argsort()[::-1][:top_k + 50]
+    top_indices = scores.argsort()[::-1][:top_k + 100]
     
     if rerank:
-        print("CE enabled")
+        # print("CE enabled")
         pairs = [(query, paragraphs[idx]) for idx in top_indices]
         ce_scores = reranker.predict(pairs)
 
@@ -235,11 +240,13 @@ def answer_query(query, top_k, rerank):
                 "score": float(ce_score),
                 "paragraph": paragraphs[idx],
             })
-    
+
+        gpt_eval(query, results[0]['paragraph'])
+        
         return results
 
 
-    print("CE disabled")
+    # print("CE disabled")
     
     results = []
     for idx in top_indices[:top_k]:
@@ -252,6 +259,41 @@ def answer_query(query, top_k, rerank):
 
     return results
 
+### Evalutaion ###
+
+def gpt_eval(query, paragraph):
+    from time import time
+    
+    start = time.time()
+    
+    prompt = f"""
+            You are evaluating factual support.
+
+            Claim:
+            "{query}"
+
+            Evidence:
+            "{paragraph}"
+
+            Question:
+            Does the evidence SUPPORT the claim, CONTRADICT it, or is it NOT MENTIONED?
+
+            Answer with exactly one of:
+            SUPPORTS
+            CONTRADICTS
+            NOT_MENTIONED
+            """.strip()
+    
+    input_ids = gpt_tokenizer(prompt, return_tensors="pt").input_ids
+
+    generation_output = gpt_model.generate(
+        input_ids=input_ids, max_new_tokens=32
+    )
+    print(gpt_tokenizer.decode(generation_output[0]))
+
+    print(f"GPT Eval took {time.time() - start:.2f} seconds")
+    
+    
 ### FastAPI App ###
 
 app = FastAPI(lifespan=lifespan)
@@ -285,3 +327,4 @@ def checkmultiple(items: List[str]):
     return {
         i: answer_query(i, TOP_K, False) for i in items
     }
+
