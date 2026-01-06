@@ -48,11 +48,12 @@ function createPopup(rect) {
     button.disabled = true;
     button.textContent = "Checking...";
 
+    const model = await getModel();
     try {
       const res = await fetch("http://127.0.0.1:8000/check", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({"method": "smbert", "query": query})
+        body: JSON.stringify({"method": model, "query": query})
       });
       const data = await res.json();
       let topResult = data[0];
@@ -71,10 +72,9 @@ function createPopup(rect) {
     } catch (err) {
       result.textContent = "Error calling server: " + err;
     }
-
     button.style.display = "none";
     result.style.display = "block";
-  };
+  }
 
   container.appendChild(button);
   container.appendChild(result);
@@ -88,4 +88,12 @@ function destroyPopup() {
     popup.remove();
     popup = null;
   }
+}
+
+function getModel() {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get(["model"], (result) => {
+      resolve(result.model);
+    });
+  });
 }
