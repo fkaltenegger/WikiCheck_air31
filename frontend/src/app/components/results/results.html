@@ -7,7 +7,7 @@
 }
 @else if (checkService.error()) {
     <div class="flex items-center justify-center">
-        <h3 class="text-xl font-extralight text-secondary mt-5"> Loading ... </h3>
+        <h3 class="text-xl font-extralight text-secondary mt-5"> {{checkService.error()}} </h3>
     </div> 
 }
 @else if (checkService.data().length > 0) {

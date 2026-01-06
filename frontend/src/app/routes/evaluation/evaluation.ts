@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { EvaluationService } from '../../services/evaluation';
 
 @Component({
   selector: 'app-evaluation',
@@ -6,6 +7,17 @@ import { Component } from '@angular/core';
   templateUrl: './evaluation.html',
   styleUrl: './evaluation.css',
 })
-export class Evaluation {
+export class Evaluation implements OnInit {
+
+  constructor(public evaluationService: EvaluationService){}
+
+  ngOnInit(): void {
+    this.getEvaluation();
+  }
+
+  getEvaluation() {
+    this.evaluationService.getEvaluation();
+    console.log(this.evaluationService.data());
+  }
 
 }
