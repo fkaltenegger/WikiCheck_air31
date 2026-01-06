@@ -30,27 +30,6 @@ export class CheckService {
         }
       });
   }
-
-  getEvaluation() {
-    this.loading.set(true);
-    this.error.set(null);
-
-    const body = null;
-
-    this.http.post<any>('http://localhost:8000/evaluation', body)
-      .subscribe({
-        next: (response: any) => {
-          console.log(response);
-          this.data.set(response);
-          this.loading.set(false);
-        },
-        error: () => {
-          this.error.set('Failed to load data');
-          this.loading.set(false);
-        }
-      });
-  }
-
 }
 
 
