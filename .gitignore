@@ -2,3 +2,4 @@
 .pkl
 **/__pycache__/
 **/wikicheck_para_*/
+**/.venv/
