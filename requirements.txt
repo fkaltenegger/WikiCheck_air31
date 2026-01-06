@@ -1,6 +1,5 @@
 transformers
 sentence_transformers
-accelerate
 torch
 datasets
 scikit-learn

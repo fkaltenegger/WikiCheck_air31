@@ -6,7 +6,6 @@ dependencies:
   - pip
   - pip:
       - transformers
-      - accelerate
       - torch
       - datasets
       - scikit-learn

@@ -53,7 +53,7 @@ function createPopup(rect) {
       const res = await fetch("http://127.0.0.1:8000/check", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({"method": model, "query": query})
+        body: JSON.stringify({"method": model, "query": query, "ce": true, "response_language": "en"})
       });
       const data = await res.json();
       let topResult = data[0];
