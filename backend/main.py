@@ -14,8 +14,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from sentence_transformers import CrossEncoder
+import json
+
 models = {"sbert": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", "mbert": "bert-base-multilingual-cased", "tf-idf": "tf-idf"}
 MODEL_NAME = models["sbert"]
+MODEL_RERANKER = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_LENGTH = 256
@@ -23,6 +28,7 @@ TOP_K = 5
 
 tokenizer = None
 model = None
+reranker = None
 
 tfidf_vectorizer = None
 tfidf_matrix = None
@@ -191,6 +197,8 @@ def switch_model(new_model_name, subset_size=2000):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
+        global reranker
+        reranker = CrossEncoder(MODEL_RERANKER, device=DEVICE)
         startup(subset_size=2000)
         print("Startup completed successfully")
         yield
@@ -201,15 +209,40 @@ async def lifespan(app: FastAPI):
 
 ### Query Answering ###
 
-def answer_query(query, top_k=TOP_K):
+def answer_query(query, top_k, rerank):
     tfidf = MODEL_NAME == "tf-idf"
     query_emb = tfidf_vectorizer.transform([query]) if tfidf else encode_texts([query])
     scores = cosine_similarity(query_emb, tfidf_matrix if tfidf else paragraph_embeddings)[0]
 
-    top_indices = scores.argsort()[::-1][:top_k]
+    top_indices = scores.argsort()[::-1][:top_k + 50]
+    
+    if rerank:
+        print("CE enabled")
+        pairs = [(query, paragraphs[idx]) for idx in top_indices]
+        ce_scores = reranker.predict(pairs)
 
+        reranked = sorted(
+            zip(top_indices, ce_scores),
+            key=lambda x: x[1],
+            reverse=True
+        )[:top_k]
+
+        results = []
+        for idx, ce_score in reranked:
+            results.append({
+                "title": para_titles[idx],
+                "url": para_urls[idx],
+                "score": float(ce_score),
+                "paragraph": paragraphs[idx],
+            })
+    
+        return results
+
+
+    print("CE disabled")
+    
     results = []
-    for idx in top_indices:
+    for idx in top_indices[:top_k]:
         results.append({
             "title": para_titles[idx],
             "url": para_urls[idx],
@@ -233,10 +266,11 @@ app.add_middleware(
 
 class RequestBody(BaseModel):
     method: str
+    ce: bool = False
     query: str
 
 @app.post("/check")
-def health_check(r: RequestBody):
+def check(r: RequestBody):
     key = r.method.lower()
     if key in models:
         requestedModel = models[key]
@@ -244,10 +278,10 @@ def health_check(r: RequestBody):
             switch_model(requestedModel)
 
     print(r)
-    return answer_query(r.query)
+    return answer_query(r.query, TOP_K, r.ce)
 
 @app.post("/checkmultiple")
-def create_items(items: List[str]):
+def checkmultiple(items: List[str]):
     return {
-        i: answer_query(i) for i in items
+        i: answer_query(i, TOP_K, False) for i in items
     }
