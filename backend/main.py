@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sentence_transformers import CrossEncoder
+import json
 import numpy as np
 import torch
 import os
@@ -19,7 +20,7 @@ import torch.nn.functional as F
 models = {"sbert": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", "mbert": "bert-base-multilingual-cased", "tf-idf": "tf-idf"}
 MODEL_NAME = models["sbert"]
 MODEL_RERANKER = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
-MODEL_EVAL  = "facebook/bart-large-mnli"
+MODEL_EVAL = "facebook/bart-large-mnli"
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_LENGTH = 256
@@ -315,3 +316,43 @@ def checkmultiple(items: List[str]):
         i: answer_query(i, TOP_K, False) for i in items
     }
 
+@app.post("/evaluation")
+def evaluation():
+    with open('eval.json', 'r') as f:
+        eval_data = f.read()
+
+    eval_data = json.loads(eval_data)
+
+    languages = ["en", "de", "es"]
+    
+    eval_results = {model: {} for model in models.keys()}
+
+    model_list = list(models.keys())
+    n = len(eval_data)
+
+    for model in model_list:
+        switch_model(models[model])
+        for lang in languages:
+            mrr = 0
+            hit_rate = 0
+            accuracy = 0
+            for data in eval_data:
+                results = answer_query(data["claims"][lang], TOP_K, False)
+                if results[0]["url"] == data["url"]:
+                    accuracy += 1
+                if results[0]["eval"] != "NOT FOUND":
+                    hit_rate += 1
+                for i, result in enumerate(results, 1):
+                    if result["url"] == data["url"]:
+                        mrr += 1 / i
+                        break
+            mrr /= n
+            hit_rate /= n
+            accuracy /= n
+            eval_results[model][lang] = {
+                "mrr": mrr,
+                "hit_rate": hit_rate,
+                "accuracy": accuracy
+            }
+
+    return eval_results
