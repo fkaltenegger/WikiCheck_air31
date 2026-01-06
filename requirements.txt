@@ -1,6 +1,6 @@
-transformers
+transformers>=4.57.3
 sentence_transformers
-torch
+torch>=2.6.0
 datasets
 scikit-learn
 numpy

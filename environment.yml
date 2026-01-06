@@ -5,8 +5,8 @@ dependencies:
   - python=3.10
   - pip
   - pip:
-      - transformers
-      - torch
+      - transformers>=4.57.3
+      - torch>=2.6.0
       - datasets
       - scikit-learn
       - numpy
