@@ -1,1 +1,31 @@
-<p>history works!</p>
+<h1 class="mt-10 text-5xl text-primary font-extralight">Fact History</h1>
+<hr class="border-t border-secondary w-1/3 mt-5"/>
+
+@for (result of history(); track $index) {
+        <div class="flex flex-col mt-5">
+            <div class="h-auto w-full bg-primary border border-accent p-10 rounded-2xl cursor-pointer">
+                <div class="flex flex-row">
+                    <div class="flex flex-col space-y-2 w-9/10">
+                        <div class="flex flex-row space-x-2">
+                            <h1 class="text-xl text-white font-semibold">Checked Fact:</h1>
+                            <h1 class="text-xl text-white font-extralight">Albert Einstein is Austrian</h1>
+                        </div>
+
+                        <div class="flex flex-row space-x-2">
+                            <p class="text-sm text-white font-semibold">Used method:</p>
+                            <p class="text-sm text-white font-extralight">TF-IDF</p>
+                        </div>
+
+                        <div class="flex flex-row space-x-2">
+                            <p class="text-sm text-white font-semibold">Activated CrossEncoder:</p>
+                            <p class="text-sm text-white font-extralight">Yes</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <h1 class="text-2xl text-white font-extralight">-></h1>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    }

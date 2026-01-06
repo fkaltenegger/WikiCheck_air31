@@ -3,4 +3,5 @@ export type ResultItem = {
     score: number;
     url: string;
     paragraph: string;
+    eval: string;
 }

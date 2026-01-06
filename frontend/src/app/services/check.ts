@@ -12,11 +12,11 @@ export class CheckService {
 
   constructor(private http: HttpClient) {}
 
-  checkFactApi(method: string, query: string) {
+  checkFactApi(method: string, query: string, ce: boolean, response_language: string) {
     this.loading.set(true);
     this.error.set(null);
 
-    const body = { method, query };
+    const body = { method, query, ce, response_language };
 
     this.http.post<ResultItem[]>('http://localhost:8000/check', body)
       .subscribe({
@@ -31,7 +31,30 @@ export class CheckService {
       });
   }
 
+  getEvaluation() {
+    this.loading.set(true);
+    this.error.set(null);
+
+    const body = null;
+
+    this.http.post<any>('http://localhost:8000/evaluation', body)
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.data.set(response);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set('Failed to load data');
+          this.loading.set(false);
+        }
+      });
+  }
+
 }
+
+
+
 
 // Title, Url, Parapgrah where its most matchable
 

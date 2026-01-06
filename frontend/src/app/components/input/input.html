@@ -1,16 +1,32 @@
+
 <div class="flex flex-col mt-20 items-center justify-center w-full">
     <h1 class="text-5xl font-bold text-primary">Fact Check</h1>
     <input type="text" [value]="query()" (input)="query.set($any($event.target).value)" placeholder="Enter your Fact" 
-    class="placeholder-gray-400 mt-10 w-1/2 rounded-lg border border-secondary px-4 py-2 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition"/>
+    class="placeholder-gray-400 mt-10 w-1/2 rounded-lg border border-accent px-4 py-2 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition"/>
     <div class="flex flex-row space-x-5 items-center justify-center mt-5">
-        <div class="h-auto outline-none cursor-pointer rounded-lg bg-secondary px-4 py-2 text-md text-white font-light">
+        <div class="h-auto outline-none cursor-pointer rounded-lg bg-accent px-4 py-2 text-md text-white font-light">
             <select id="dropdown" (change)="method.set($any($event.target).value)" >
                 @for (option of methods(); track $index) {
                     <option [value]="option"> {{option}} </option>
                 }
             </select>
         </div>
-        <button (click)="checkFact()" class="cursor-pointer rounded-lg bg-secondary px-4 py-2 text-md text-white font-light">Check the fact -></button>
+
+        <div class="flex flex-row space-x-2 h-auto outline-none cursor-pointer rounded-lg bg-accent px-4 py-2 text-md text-white font-light">
+            <label>Use Cross Encoder</label>
+            <input type="checkbox" [checked]="ce()" (change)="ce.set(!$any($event.target).checked ? false : true)"/>
+        </div>
+
+        <div class="h-auto outline-none cursor-pointer rounded-lg bg-accent px-4 py-2 text-md text-white font-light">
+            Response Language: 
+            <select id="dropdown" (change)="response_language.set($any($event.target).value)" >
+                @for (language of response_languages(); track $index) {
+                    <option [value]="language"> {{language}} </option>
+                }
+            </select>
+        </div>
+  
+        <button (click)="checkFact()" class="h-auto cursor-pointer rounded-lg bg-secondary px-4 py-2 text-md text-white font-light">Check the fact -></button>
     </div>
     <hr class="border-light mt-10 w-1/4 items-center justify-center"/>
 </div>
