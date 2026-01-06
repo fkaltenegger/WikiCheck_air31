@@ -12,12 +12,10 @@ import torch.nn.functional as F
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from sklearn.feature_extraction.text import TfidfVectorizer
 
-
-
-
-MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-#MODEL_NAME = "bert-base-multilingual-cased"
+models = {"sbert": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", "mbert": "bert-base-multilingual-cased", "tf-idf": "tf-idf"}
+MODEL_NAME = models["sbert"]
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_LENGTH = 256
@@ -25,6 +23,9 @@ TOP_K = 5
 
 tokenizer = None
 model = None
+
+tfidf_vectorizer = None
+tfidf_matrix = None
 
 paragraph_embeddings = None
 paragraphs = None
@@ -76,6 +77,17 @@ def save_encodings(path="wikicheck_index"):
 
     print(f"Encodings saved to '{path}/'")
 
+def save_tfidf(path):
+    os.makedirs(path, exist_ok=True)
+    with open(os.path.join(path, "tfidf.pkl"), "wb") as f:
+        pickle.dump(
+            {
+                "vectorizer": tfidf_vectorizer,
+                "matrix": tfidf_matrix,
+            },
+            f,
+        )
+
 def load_encodings(path="wikicheck_index"):
     global paragraph_embeddings, paragraphs, para_titles, para_urls
 
@@ -92,9 +104,28 @@ def load_encodings(path="wikicheck_index"):
 
     print(f"Encodings loaded from '{path}/'")
 
+def load_tfidf(path):
+    global tfidf_vectorizer, tfidf_matrix
+
+    with open(os.path.join(path, "tfidf.pkl"), "rb") as f:
+        data = pickle.load(f)
+    
+    tfidf_vectorizer = data["vectorizer"]
+    tfidf_matrix = data["matrix"]
+
+def build_tfidf_index():
+    global tfidf_vectorizer, tfidf_matrix
+
+    tfidf_vectorizer = TfidfVectorizer(
+        ngram_range=(1, 2),
+        max_df=0.95,
+        min_df=2,
+        stop_words="english"
+    )
+    tfidf_matrix = tfidf_vectorizer.fit_transform(paragraphs)
 
 def startup(subset_size=2000):
-    global paragraph_embeddings, paragraphs, para_titles, para_urls
+    global paragraph_embeddings, paragraphs, para_titles, para_urls, tokenizer, model
     dataset = load_dataset(
         "wikimedia/wikipedia",
         "20231101.en",
@@ -115,30 +146,40 @@ def startup(subset_size=2000):
             paragraphs.append(p)
             para_titles.append(t)
             para_urls.append(u)
-
+    
     safe_model_tag = MODEL_NAME.replace("/", "_")
     INDEX_PATH = f"wikicheck_para_index_{subset_size}_{safe_model_tag}"
 
-    if os.path.exists(os.path.join(INDEX_PATH, "embeddings.npy")):
-        load_encodings(INDEX_PATH)
+    if MODEL_NAME == "tf-idf":
+        if os.path.exists(os.path.join(INDEX_PATH, "tfidf.pkl")):
+            load_tfidf(INDEX_PATH)
+        else:
+            print("Building TF-IDF index...")
+            build_tfidf_index()
+            save_tfidf(INDEX_PATH)
     else:
-        print("Encoding Wikipedia paragraphs...")
-        paragraph_embeddings = encode_texts(paragraphs)
-        save_encodings(INDEX_PATH)
+        old_model = model
+        old_tokenizer = tokenizer
+        
+        tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+        model = AutoModel.from_pretrained(MODEL_NAME).to(DEVICE)
+        model.eval()
+
+        del old_model
+        del old_tokenizer
+
+        if os.path.exists(os.path.join(INDEX_PATH, "embeddings.npy")):
+            load_encodings(INDEX_PATH)
+        else:
+            print("Encoding Wikipedia paragraphs...")
+            paragraph_embeddings = encode_texts(paragraphs)
+            save_encodings(INDEX_PATH)
 
 def switch_model(new_model_name, subset_size=2000):
     print(f"Switching model to {new_model_name}...")
-    global MODEL_NAME, tokenizer, model
-    old_model = model
-    old_tokenizer = tokenizer
+    global MODEL_NAME
     
     MODEL_NAME = new_model_name
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-    model = AutoModel.from_pretrained(MODEL_NAME).to(DEVICE)
-    model.eval()
-    
-    del old_model
-    del old_tokenizer
 
     if DEVICE == "cuda":
         torch.cuda.empty_cache()
@@ -149,14 +190,8 @@ def switch_model(new_model_name, subset_size=2000):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global tokenizer, model
     try:
-        tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-        model = AutoModel.from_pretrained(MODEL_NAME).to(DEVICE)
-        model.eval()
-
         startup(subset_size=2000)
-
         print("Startup completed successfully")
         yield
 
@@ -167,11 +202,11 @@ async def lifespan(app: FastAPI):
 ### Query Answering ###
 
 def answer_query(query, top_k=TOP_K):
-    query_emb = encode_texts([query])
-    scores = cosine_similarity(query_emb, paragraph_embeddings)[0]
+    tfidf = MODEL_NAME == "tf-idf"
+    query_emb = tfidf_vectorizer.transform([query]) if tfidf else encode_texts([query])
+    scores = cosine_similarity(query_emb, tfidf_matrix if tfidf else paragraph_embeddings)[0]
 
     top_indices = scores.argsort()[::-1][:top_k]
-    best_idx = int(top_indices[0])
 
     results = []
     for idx in top_indices:
@@ -182,18 +217,8 @@ def answer_query(query, top_k=TOP_K):
             "paragraph": paragraphs[idx],
         })
 
-    # return {
-    #     # "query": query,
-    #     # "answer": paragraphs[best_idx],
-    #     # "best_article": {
-    #     #     "title": para_titles[best_idx],
-    #     #     "url": para_urls[best_idx],
-    #     #     "score": float(scores[best_idx]),
-    #     # },
-    #     "top_k_results": results,
-    # }
-
     return results
+
 ### FastAPI App ###
 
 app = FastAPI(lifespan=lifespan)
@@ -206,23 +231,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-
 class RequestBody(BaseModel):
     method: str
     query: str
 
 @app.post("/check")
 def health_check(r: RequestBody):
-    if r.method.lower() == "sbert":
-        if MODEL_NAME != "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2":
-            switch_model("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
-    elif r.method.lower() == "mbert":
-        if MODEL_NAME != "bert-base-multilingual-cased":
-            switch_model("bert-base-multilingual-cased")
-    elif r.method.lower() == "tf-idf":
-        pass  # keep current model
-    
+    key = r.method.lower()
+    if key in models:
+        requestedModel = models[key]
+        if MODEL_NAME != requestedModel:
+            switch_model(requestedModel)
+
     print(r)
     return answer_query(r.query)
 

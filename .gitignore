@@ -1,2 +1,4 @@
 .npy
 .pkl
+**/__pycache__/
+**/wikicheck_para_*/
