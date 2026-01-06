@@ -375,5 +375,8 @@ def evaluation():
                     "accurate_hit_rate": hit_rate / accuracy if accuracy > 0 else 0,
                     "results": query_answers
                 }
+                
+    # with open('eval_results.json', 'w') as f:
+    #     json.dump(eval_results, f, indent=4)
 
     return eval_results
