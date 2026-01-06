@@ -134,11 +134,21 @@ def build_tfidf_index():
 
 def startup(subset_size=2000):
     global paragraph_embeddings, paragraphs, para_titles, para_urls, tokenizer, model
+    
+    # TODO: TEST if streaming works correctly
+    
     dataset = load_dataset(
         "wikimedia/wikipedia",
         "20231101.en",
-        split=f"train[:{subset_size}]"
-    )
+        split=f"train",
+        streaming=True
+    ).take(subset_size)
+    
+    # dataset = load_dataset(
+    #     "wikimedia/wikipedia",
+    #     "20231101.en",
+    #     split=f"train[:{subset_size}]"
+    # )
 
     articles = [a["text"] for a in dataset]
     titles = [a["title"] for a in dataset]
@@ -202,7 +212,8 @@ async def lifespan(app: FastAPI):
         global reranker, eval_model, eval_tokenizer
         reranker = CrossEncoder(MODEL_RERANKER, device=DEVICE)
         eval_tokenizer = AutoTokenizer.from_pretrained(MODEL_EVAL)
-        eval_model = AutoModelForSequenceClassification.from_pretrained(MODEL_EVAL)
+        eval_model = AutoModelForSequenceClassification.from_pretrained(MODEL_EVAL).to(DEVICE)
+        eval_model.eval()
         startup(subset_size=2000)
         print("Startup completed successfully")
         yield
@@ -268,9 +279,11 @@ def eval(query, paragraph):
         query,
         return_tensors="pt",
         truncation=True
-    )
-
-    logits = eval_model(**inputs).logits
+    ).to(DEVICE)
+    
+    with torch.no_grad():
+        logits = eval_model(**inputs).logits
+        
     prediction = logits.argmax(dim=1).item()
 
     label_map = {
@@ -325,34 +338,42 @@ def evaluation():
 
     languages = ["en", "de", "es"]
     
-    eval_results = {model: {} for model in models.keys()}
+    eval_results = {model: { f"ce_{ce}": {} for ce in [True, False] } for model in models.keys()}
 
     model_list = list(models.keys())
     n = len(eval_data)
 
     for model in model_list:
         switch_model(models[model])
-        for lang in languages:
-            mrr = 0
-            hit_rate = 0
-            accuracy = 0
-            for data in eval_data:
-                results = answer_query(data["claims"][lang], TOP_K, False)
-                if results[0]["url"] == data["url"]:
-                    accuracy += 1
-                if results[0]["eval"] != "NOT FOUND":
-                    hit_rate += 1
-                for i, result in enumerate(results, 1):
-                    if result["url"] == data["url"]:
-                        mrr += 1 / i
-                        break
-            mrr /= n
-            hit_rate /= n
-            accuracy /= n
-            eval_results[model][lang] = {
-                "mrr": mrr,
-                "hit_rate": hit_rate,
-                "accuracy": accuracy
-            }
+        for ce in [True, False]:
+            for lang in languages:
+                mrr = 0
+                hit_rate = 0
+                accuracy = 0
+                query_answers = []
+                for data in eval_data:
+                    results = answer_query(data["claims"][lang], TOP_K, ce)
+                    query_answers.append({
+                        "query": data["claims"][lang],
+                        "results": results
+                    })
+                    if results[0]["url"] == data["url"]:
+                        accuracy += 1
+                    if results[0]["eval"] != "NOT MENTIONED":
+                        hit_rate += 1
+                    for i, result in enumerate(results, 1):
+                        if result["url"] == data["url"]:
+                            mrr += 1 / i
+                            break
+                mrr /= n
+                hit_rate /= n
+                accuracy /= n
+                eval_results[model][f"ce_{ce}"][lang] = {
+                    "mrr": mrr,
+                    "hit_rate": hit_rate,
+                    "accuracy": accuracy,
+                    "accurate_hit_rate": hit_rate / accuracy if accuracy > 0 else 0,
+                    "results": query_answers
+                }
 
     return eval_results
