@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ResultItem } from '../models/result.type';
-import { StorageService } from './storage';
+import { StorageService } from './storage-service';
 
 @Injectable({
   providedIn: 'root',

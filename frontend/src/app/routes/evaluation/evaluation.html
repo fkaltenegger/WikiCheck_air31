@@ -15,7 +15,9 @@
     </div> 
 }
 @else if (evaluationService.data().length > 0) {
-    <h2 class="text-3xl font-semibold text-primary mt-10">Top 5 Results</h2>
-    <p>{{evaluationService.data()}}</p>
+    @for (options of options$; track $index) {
+        <div echarts [options]="options! | async" class="h-100 w-full"> </div>
+    }
+    
 }
 @else {}

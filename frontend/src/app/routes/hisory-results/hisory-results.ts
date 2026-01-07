@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HistoryItem } from '../../models/history.type';
-import { StorageService } from '../../services/storage';
+import { StorageService } from '../../services/storage-service';
 import { ResultItem } from '../../models/result.type';
 import { Query } from '../../models/query.type';
 import { CommonModule } from '@angular/common';

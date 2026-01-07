@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { StorageService } from '../../services/storage';
+import { StorageService } from '../../services/storage-service';
 import { ResultItem } from '../../models/result.type';
 import { Router } from '@angular/router';
 

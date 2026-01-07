@@ -1,6 +1,6 @@
 import { Component, inject, signal} from '@angular/core';
 import { catchError, Observable } from 'rxjs';
-import { CheckService } from '../../services/check';
+import { CheckService } from '../../services/check-service';
 import { ResultItem } from '../../models/result.type';
 import { CommonModule } from '@angular/common';
 
