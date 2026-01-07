@@ -1,0 +1,46 @@
+<button (click)="back()" class="mt-5 h-auto w-auto cursor-pointer rounded-lg bg-secondary px-4 py-2 text-md text-white font-light"><- History</button>
+
+<div class="flex flex-col mt-5">
+<div class="h-auto w-full bg-light border border-accent p-10 rounded-2xl cursor-pointer">
+    <div class="flex flex-row">
+        <div class="flex flex-col space-y-2 w-9/10">
+            <div class="flex flex-row space-x-2">
+                <h1 class="text-xl text-primary font-semibold">Checked Fact:</h1>
+                <h1 class="text-xl text-primary font-extralight">{{query().fact}}</h1>
+            </div>
+
+            <div class="flex flex-row space-x-2">
+                <p class="text-sm text-primary font-semibold">Used method:</p>
+                <p class="text-sm text-primary font-extralight">{{query().used_method}}</p>
+            </div>
+
+            <div class="flex flex-row space-x-2">
+                <p class="text-sm text-primary font-semibold">Activated CrossEncoder:</p>
+                <p class="text-sm text-primary font-extralight">{{query().ce_on}}</p>
+            </div>
+
+            <div class="flex flex-row space-x-2">
+                <p class="text-sm text-primary font-semibold">Response Language:</p>
+                <p class="text-sm text-primary font-extralight">
+                    {{query().selected_response_language}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+ 
+ @for (result of results(); track $index) {
+        <div class="flex flex-col mt-5">
+            <div class="h-auto w-full bg-primary border border-accent p-10 rounded-2xl flex flex-col space-y-5">
+                <div class="flex flex-row justify-between">
+                    <h1 class="text-xl text-white font-semibold">{{result.title}}</h1>
+                    <div class="rounded-2xl w-1/5 flex items-center justify-center" [ngClass]="getEvalBackground(result.eval)">
+                        <p class="text-sm text-white">{{result.eval}}</p>
+                    </div>
+                </div>
+                
+                <a href="{{result.url}}" target="_blank" class="text-white text-md italic font-light">Article: {{result.url}}</a>
+                    <p class="text-white font-extralight">Relevant Paragraph: <br/>{{result.paragraph}}</p>
+            </div>
+        </div>
+}

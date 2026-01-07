@@ -17,7 +17,7 @@ export class Input {
   method = signal<string>(this.methods()[0]);
   ce = signal(true);
   response_languages = signal<Array<string>>(['en', 'de', 'es']);
-  response_language = signal<string>(this.methods()[0]);
+  response_language = signal<string>(this.response_languages()[0]);
   
   constructor(private checkService: CheckService) {}
 
