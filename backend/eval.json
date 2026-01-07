@@ -70,5 +70,21 @@
       "de": "Das Klima in Brunei ist trocken",
       "es": "El clima en Brunei es seco"
     }
+  },
+    {
+    "url": "https://en.wikipedia.org/wiki/Amethyst",
+    "claims": {
+      "en": "Amethist is a red variety of quarz",
+      "de": "Amethyst ist eine rote Quarzart",
+      "es": "La amatista es una variedad roja del cuarzo"
+    }
+  },
+    {
+    "url": "https://en.wikipedia.org/wiki/Angilbert",
+    "claims": {
+      "en": "Angilbert is an alien",
+      "de": "Angilbert ist ein Außerirdischer",
+      "es": "Angilbert es un extraterrestre"
+    }
   }
 ]

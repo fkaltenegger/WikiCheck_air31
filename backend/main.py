@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from typing import List
 from datasets import load_dataset
-from transformers import AutoTokenizer, AutoModel, AutoModelForSequenceClassification
+from transformers import AutoTokenizer, AutoModel, AutoModelForSequenceClassification, MarianMTModel, MarianTokenizer
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
-from time import time
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -21,6 +20,8 @@ models = {"sbert": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 MODEL_NAME = models["sbert"]
 MODEL_RERANKER = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
 MODEL_EVAL = "facebook/bart-large-mnli"
+MODEL_TRANSLATE_DE = "Helsinki-NLP/opus-mt-en-de"
+MODEL_TRANSLATE_ES = "Helsinki-NLP/opus-mt-en-es"
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_LENGTH = 256
@@ -39,6 +40,17 @@ paragraph_embeddings = None
 paragraphs = None
 para_titles = None
 para_urls = None
+
+translation_models = {
+    "de": {
+        model: None,
+        tokenizer: None
+    },
+    "es": {
+        model: None,
+        tokenizer: None
+    }
+}
 
 ### Helper Functions ###
 
@@ -132,6 +144,15 @@ def build_tfidf_index():
     )
     tfidf_matrix = tfidf_vectorizer.fit_transform(paragraphs)
 
+def translate(texts, language):
+    tokenizer = translation_models[language]["tokenizer"]
+    model = translation_models[language]["model"]
+
+    inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True).to(DEVICE)
+    translated = model.generate(**inputs)
+
+    return tokenizer.batch_decode(translated, skip_special_tokens=True)
+
 def startup(subset_size=2000):
     global paragraph_embeddings, paragraphs, para_titles, para_urls, tokenizer, model
     
@@ -209,11 +230,15 @@ def switch_model(new_model_name, subset_size=2000):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
-        global reranker, eval_model, eval_tokenizer
+        global reranker, eval_model, eval_tokenizer, translation_models
         reranker = CrossEncoder(MODEL_RERANKER, device=DEVICE)
         eval_tokenizer = AutoTokenizer.from_pretrained(MODEL_EVAL)
         eval_model = AutoModelForSequenceClassification.from_pretrained(MODEL_EVAL).to(DEVICE)
         eval_model.eval()
+        translation_models["de"]["tokenizer"] = MarianTokenizer.from_pretrained(MODEL_TRANSLATE_DE)
+        translation_models["de"]["model"] = MarianMTModel.from_pretrained(MODEL_TRANSLATE_DE).to(DEVICE)
+        translation_models["es"]["tokenizer"] = MarianTokenizer.from_pretrained(MODEL_TRANSLATE_ES)
+        translation_models["es"]["model"] = MarianMTModel.from_pretrained(MODEL_TRANSLATE_ES).to(DEVICE)
         startup(subset_size=2000)
         print("Startup completed successfully")
         yield
@@ -224,7 +249,7 @@ async def lifespan(app: FastAPI):
 
 ### Query Answering ###
 
-def answer_query(query, top_k, rerank):
+def answer_query(query, top_k, rerank, lang="en"):
     tfidf = MODEL_NAME == "tf-idf"
     query_emb = tfidf_vectorizer.transform([query]) if tfidf else encode_texts([query])
     scores = cosine_similarity(query_emb, tfidf_matrix if tfidf else paragraph_embeddings)[0]
@@ -232,31 +257,16 @@ def answer_query(query, top_k, rerank):
     top_indices = scores.argsort()[::-1][:top_k + 100]
     
     if rerank:
-        # print("CE enabled")
         pairs = [(query, paragraphs[idx]) for idx in top_indices]
         ce_scores = reranker.predict(pairs)
 
-        reranked = sorted(
-            zip(top_indices, ce_scores),
-            key=lambda x: x[1],
-            reverse=True
-        )[:top_k]
+        for idx, new_score in zip(top_indices, ce_scores):
+            scores[idx] = new_score
 
-        results = []
-        for idx, ce_score in reranked:
-            results.append({
-                "title": para_titles[idx],
-                "url": para_urls[idx],
-                "score": float(ce_score),
-                "paragraph": paragraphs[idx],
-                "eval": eval(query, paragraphs[idx])
-            })
-        
-        return results
-
-
-    # print("CE disabled")
+        top_indices = top_indices[np.argsort(scores[top_indices])[::-1]]
     
+    translations = []
+
     results = []
     for idx in top_indices[:top_k]:
         results.append({
@@ -266,14 +276,21 @@ def answer_query(query, top_k, rerank):
             "paragraph": paragraphs[idx],
             "eval": eval(query, paragraphs[idx])
         })
+        if lang != "en":
+            translations.append(paragraphs[idx])
+            translations.append(para_titles[idx])
+
+    if len(translations) > 0:
+        translations = translate(translations, lang)
+        for i, result in enumerate(results):
+            result["paragraph"] = translations[i * 2]
+            result["title"] = translations[i * 2 + 1]
 
     return results
 
 ### Evalutaion ###
 
 def eval(query, paragraph):
-    start = time()
-
     inputs = eval_tokenizer(
         paragraph,
         query,
@@ -311,6 +328,7 @@ class RequestBody(BaseModel):
     method: str
     ce: bool = True
     query: str
+    response_language: str
 
 @app.post("/check")
 def check(r: RequestBody):
@@ -321,7 +339,7 @@ def check(r: RequestBody):
             switch_model(requestedModel)
 
     print(r)
-    return answer_query(r.query, TOP_K, r.ce)
+    return answer_query(r.query, TOP_K, r.ce, r.response_language)
 
 @app.post("/checkmultiple")
 def checkmultiple(items: List[str]):
@@ -375,5 +393,8 @@ def evaluation():
                     "accurate_hit_rate": hit_rate / accuracy if accuracy > 0 else 0,
                     "results": query_answers
                 }
+                
+    # with open('eval_results.json', 'w') as f:
+    #     json.dump(eval_results, f, indent=4)
 
     return eval_results
