@@ -14,20 +14,33 @@ import { AsyncPipe } from '@angular/common';
 export class Evaluation implements OnInit {
 
   barChartOptions$: Observable<any>[] = [];
-  heatMapOptions$!: Observable<any>;
+  heatMapOptions$: Observable<any>[] = [];
 
   constructor(public evaluationService: EvaluationService){
     effect(() => {
     const data = this.evaluationService.data();
     if (!data.length) return;
 
-    console.log(this.evaluationService.data());
-
     this.buildChart(this.evaluationService.mrr_data(), 'MRR');
     this.buildChart(this.evaluationService.hit_rate_data(), 'Hit Rate');
     this.buildChart(this.evaluationService.accuracy_data(), 'Accuracy');
-    this.buildChart(this.evaluationService.hit_rate_data(), 'Accurate Hit Rate');
-    this.buildHeatMap(this.evaluationService.hit_rate_data(), 'Accurate Hit Rate');
+    this.buildChart(this.evaluationService.accurate_hit_rate_data(), 'Accurate Hit Rate');
+
+    console.log(this.evaluationService.heat_map_data());
+
+    for(const key of Object.keys(this.evaluationService.heat_map_data()[0])){
+      const entry = this.evaluationService.heat_map_data()[0][key];
+      console.log(entry);
+      for(let map = 0; map < entry.length; map++){
+        let title = 'English';
+        if(map % 3 === 1)
+          title = 'German';
+        else if(map % 3 === 2)
+          title = 'Spanish';
+
+        this.buildHeatMap(entry[map], `${key.toUpperCase()} (${title})`);
+      }
+    }
   });
   }
 
@@ -39,7 +52,7 @@ export class Evaluation implements OnInit {
       text: title_text
       },
       tooltip: {},
-      color: ['#083344', '#155E75', '#0891B2'],
+      color: ['#083344', '#155E75', '#0891B2', '#C2C2C2'],
       dataset: {
         source: [
           ['Metric','English','German','Spanish','Total'],
@@ -56,12 +69,10 @@ export class Evaluation implements OnInit {
 
   buildHeatMap(inputData: any[], title_text: string) {
 
-    const x = [
-        '', 
-    ];
-
-    const y = [
-        '',
+    const labels = [
+        'CONTRADICTS',
+        'NOT MENTIONED',
+        'SUPPORTS',
     ];
 
 const data = inputData
@@ -69,10 +80,10 @@ const data = inputData
     return [item[1], item[0], item[2] || '-'];
 });
 
-    this.heatMapOptions$ = of({
+    const options$ = of({
       legend: {},
       title: {
-      text: title_text
+        text: title_text,
       },
       tooltip: {
         positin: 'top'
@@ -84,21 +95,26 @@ const data = inputData
       color: ['#083344', '#155E75', '#0891B2'],
       xAxis: {
         type: 'category',
-        data: x,
+        name: 'Groundtruth',
+        nameLocation: 'middle',
+        data: labels,
         splitArea: {
           show: true
         }
       },
       yAxis: {
         type: 'category',
-        data: y,
+        name: 'Predicted',
+        nameLocation: 'middle',
+        data: labels,
         splitArea: {
           show: true
         }
       },
       visualMap: {
+        show: false,
         min: 0,
-        max: data.length,
+        max: 10,
         calculable: true,
         orient: 'horizontal',
         left: 'center',
@@ -106,7 +122,7 @@ const data = inputData
       },
       series: 
       [
-        { name: 'Name',
+        { 
           type: 'heatmap',
           data: data,
           label: {
@@ -121,10 +137,12 @@ const data = inputData
          }
       ]
     });
+
+    this.heatMapOptions$.push(options$);
   }
 
   ngOnInit(): void {
-    this.evaluationService.getData();
+    this.evaluationService.getEvaluation();
   }
 
 }

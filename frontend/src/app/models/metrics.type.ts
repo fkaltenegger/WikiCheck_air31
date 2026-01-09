@@ -6,4 +6,5 @@ export type Metrics = {
     hit_rate: number,
     accuracy: number,
     accurate_hit_rate: number;
+    heat_map: [];
 }
