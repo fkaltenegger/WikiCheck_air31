@@ -93,7 +93,7 @@ function destroyPopup() {
 function getModel() {
   return new Promise((resolve) => {
     chrome.storage.sync.get(["model"], (result) => {
-      resolve(result.model);
+      resolve(result.model || "sbert");
     });
   });
 }
