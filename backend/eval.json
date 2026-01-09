@@ -1,6 +1,7 @@
 [
   {
     "url": "https://en.wikipedia.org/wiki/Blue",
+    "expected": "SUPPORTS",
     "claims": {
       "en": "Blue is one of the three primary colours",
       "de": "Blau ist eine der drei Grundfarben",
@@ -9,14 +10,16 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Brewing",
+    "expected": "SUPPORTS",
     "claims": {
       "en": "By-products are spent grain and the sediment from the filtration process which may be dried and resold as brewers dried yeast for poultry feed.",
-      "de": "Sein Transportkonzept war ein großer Erfolg, wenn auch nicht so, wie er es beabsichtigt hatte",
-      "es": "Su plan de transporte fue un gran éxito, aunque no tal y como él había previsto"
+      "de": "Nebenprodukte sind Biertreber und Sedimente aus dem Filterprozess, die getrocknet und als Bierhefe für Geflügelfutter weiterverkauft werden können",
+      "es": "Los subproductos son el grano usado y el sedimento del proceso de filtración, que pueden secarse y revenderse como levadura seca de cerveza para la alimentación de aves de corral"
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Bus",
+    "expected": "SUPPORTS",
     "claims": {
       "en": "His transport scheme was a huge success, although not as he had intended",
       "de": "Sein Transportkonzept war ein großer Erfolg, wenn auch nicht ganz so, wie er es sich vorgestellt hatte, da die meisten seiner Fahrgäste sein Spa nicht besuchten.",
@@ -25,6 +28,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Benjamin%20Franklin",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "Benjamin Franklin died at the age of 31",
       "de": "Benjamin Franklin starb im Alter von 31 Jahren",
@@ -33,6 +37,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Ball",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "A ball is a squared object",
       "de": "Ein Ball ist ein quadratisches Objekt",
@@ -41,6 +46,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/BMW",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "The global headquarter of BMW is in Boston",
       "de": "Der weltweite Hauptsitz von BMW befindet sich in Boston",
@@ -49,6 +55,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Bosporus",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "The Bosporus Strait is located in Vienna",
       "de": "Die Bosporus-Meerenge befindet sich in Wien",
@@ -57,6 +64,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Algeria",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "The currency of Algeria is dollar",
       "de": "Die Währung Algeriens ist der Dollar",
@@ -65,26 +73,209 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Brunei",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "The climate in Brunei is dry",
       "de": "Das Klima in Brunei ist trocken",
       "es": "El clima en Brunei es seco"
     }
   },
-    {
+  {
     "url": "https://en.wikipedia.org/wiki/Amethyst",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "Amethist is a red variety of quarz",
       "de": "Amethyst ist eine rote Quarzart",
       "es": "La amatista es una variedad roja del cuarzo"
     }
   },
-    {
+  {
     "url": "https://en.wikipedia.org/wiki/Angilbert",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "Angilbert is an alien",
       "de": "Angilbert ist ein Außerirdischer",
       "es": "Angilbert es un extraterrestre"
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Asterix",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Asterix fell into the druid's cauldron as a baby.",
+      "de": "Asterix fiel als Baby in den Kessel des Druiden.",
+      "es": "Astérix cayó en el caldero del druida cuando era un bebé."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Acceleration",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Metre per second squared is the SI unit for acceleration.",
+      "de": "Meter pro Sekunde zum Quadrat ist die SI-Einheit für die Beschleunigung.",
+      "es": "El metro por segundo al cuadrado es la unidad SI para la aceleración."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Atlanta",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Atlanta hosted the Olympic Games in 1992.",
+      "de": "Atlanta war 1992 Austragungsort der Olympischen Spiele.",
+      "es": "Atlanta fue sede de los Juegos Olímpicos en 1992."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Barcelona",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Barcelona is a city in France.",
+      "de": "Barcelona ist eine Stadt in Frankreich.",
+      "es": "Barcelona es una ciudad de Francia."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Algorithm",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "An algorithm is a sequence of instructions, used to solve a problem.",
+      "de": "Ein Algorithmus ist eine Folge von Anweisungen, die zur Lösung eines Problems verwendet wird.",
+      "es": "Un algoritmo es una secuencia de instrucciones que se utiliza para resolver un problema."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Asia",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Asia is the largest continent by population.",
+      "de": "Asien ist der bevölkerungsreichste Kontinent.",
+      "es": "Asia es el continente más grande en cuanto a población."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Apple%20Inc.",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Apple was founded by Mark Zuckerberg.",
+      "de": "Apple wurde von Mark Zuckerberg gegründet.",
+      "es": "Apple fue fundada por Mark Zuckerberg."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/April",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "April is 31 days long.",
+      "de": "Der April hat 31 Tage.",
+      "es": "Abril tiene 31 días."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Artemis",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Artemis is the goddess of war.",
+      "de": "Artemis ist die Göttin des Krieges.",
+      "es": "Artemisa es la diosa de la guerra."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Boomerang",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Boomerangs were historically used as hunting weapons.",
+      "de": "Bumerangs wurden historisch als Jagdwaffen verwendet.",
+      "es": "Los bumeranes se utilizaban históricamente como armas de caza."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Anus",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The development of the anus was an important stage in the evolution of multicellular animals.",
+      "de": "Die Entwicklung des Afters war ein wichtiger Schritt in der Evolution vielzelliger Tiere.",
+      "es": "El desarrollo del ano fue una etapa importante en la evolución de los animales multicelulares."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/ASCII",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "ASCII is the Acronym for Angles Standard Color for Interacting Innerly.",
+      "de": "ASCII ist die Abkürzung für „Angles Standard Color for Interacting Innerly” (Standardfarben für die innere Interaktion).",
+      "es": "ASCII es el acrónimo de Angles Standard Color for Interacting Innerly (Estándar de color angular para la interacción interna)."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Athens",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Athens is the capital city of Albania.",
+      "de": "Athen ist die Hauptstadt Albaniens.",
+      "es": "Atenas es la capital de Albania."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/AK-47",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "AK-47 is known as the Austrian Kalashnikov.",
+      "de": "Die AK-47 ist als österreichische Kalaschnikow bekannt.",
+      "es": "El AK-47 es conocido como el Kalashnikov austriaco."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Airline",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The „Deutsche Luftschiffahrts-Aktiengesellschaft” was the worlds first commercial passenger airline.",
+      "de": "Die Deutsche Luftschiffahrts-Aktiengesellschaft war die weltweit erste kommerzielle Passagierfluggesellschaft.",
+      "es": "La „Deutsche Luftschiffahrts-Aktiengesellschaft” fue la primera aerolínea comercial de pasajeros del mundo."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/AMD",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "AMD builds fast cars.",
+      "de": "AMD baut schnelle Autos.",
+      "es": "AMD fabrica coches rápidos."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Berlin",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Berlin inhabits around 3.7 million people.",
+      "de": "In Berlin leben etwa 3,7 Millionen Menschen.",
+      "es": "Berlín tiene una población de alrededor de 3,7 millones de habitantes."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Botswana",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The first written records relating to modern-day Botswana appear in 1824.",
+      "de": "Die ersten schriftlichen Aufzeichnungen über das heutige Botswana stammen aus dem Jahr 1824.",
+      "es": "Los primeros registros escritos relacionados con la actual Botsuana aparecen en 1824."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Badminton",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Badminton is a sport played by using a racquet.",
+      "de": "Badminton ist eine Sportart, die mit einem Schläger gespielt wird.",
+      "es": "El bádminton es un deporte que se juega con una raqueta."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Boxing",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Boxing is a sport played by using a ball.",
+      "de": "Boxen ist eine Sportart, die mit einem Ball gespielt wird.",
+      "es": "El boxeo es un deporte que se practica con una pelota."
     }
   }
 ]

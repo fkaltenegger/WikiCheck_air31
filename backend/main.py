@@ -349,7 +349,16 @@ def checkmultiple(items: List[str]):
 
 @app.post("/evaluation")
 def evaluation():
-    with open('eval.json', 'r') as f:
+    
+    try: 
+        with open ('eval_results.json', 'r', encoding="utf-8") as f:
+            eval_results = json.load(f)
+        return eval_results
+    except FileNotFoundError:
+        pass
+    
+    
+    with open('eval.json', 'r', encoding="utf-8") as f:
         eval_data = f.read()
 
     eval_data = json.loads(eval_data)
@@ -369,6 +378,7 @@ def evaluation():
                 hit_rate = 0
                 accuracy = 0
                 query_answers = []
+                heat_map = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
                 for data in eval_data:
                     results = answer_query(data["claims"][lang], TOP_K, ce)
                     query_answers.append({
@@ -377,8 +387,18 @@ def evaluation():
                     })
                     if results[0]["url"] == data["url"]:
                         accuracy += 1
-                    if results[0]["eval"] != "NOT MENTIONED":
+                    if results[0]["eval"] == data["expected"]:
                         hit_rate += 1
+
+                    labels = {
+                        "CONTRADICTS": 0,
+                        "NOT MENTIONED": 1,
+                        "SUPPORTS": 2
+                    }
+                    value = labels[results[0]["eval"]]
+                    expected = labels[data["expected"]]
+                    heat_map[value][expected] += 1
+
                     for i, result in enumerate(results, 1):
                         if result["url"] == data["url"]:
                             mrr += 1 / i
@@ -391,10 +411,11 @@ def evaluation():
                     "hit_rate": hit_rate,
                     "accuracy": accuracy,
                     "accurate_hit_rate": hit_rate / accuracy if accuracy > 0 else 0,
+                    "heat_map": heat_map,
                     "results": query_answers
                 }
                 
-    # with open('eval_results.json', 'w') as f:
-    #     json.dump(eval_results, f, indent=4)
+    with open('eval_results.json', 'w') as f:
+        json.dump(eval_results, f, indent=4)
 
     return eval_results
