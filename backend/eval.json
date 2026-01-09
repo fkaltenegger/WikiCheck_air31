@@ -1,7 +1,7 @@
 [
   {
     "url": "https://en.wikipedia.org/wiki/Blue",
-    "expected": "SUPPORTED",
+    "expected": "SUPPORTS",
     "claims": {
       "en": "Blue is one of the three primary colours",
       "de": "Blau ist eine der drei Grundfarben",
@@ -10,7 +10,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Brewing",
-    "expected": "SUPPORTED",
+    "expected": "SUPPORTS",
     "claims": {
       "en": "By-products are spent grain and the sediment from the filtration process which may be dried and resold as brewers dried yeast for poultry feed.",
       "de": "Nebenprodukte sind Biertreber und Sedimente aus dem Filterprozess, die getrocknet und als Bierhefe für Geflügelfutter weiterverkauft werden können",
@@ -19,7 +19,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Bus",
-    "expected": "SUPPORTED",
+    "expected": "SUPPORTS",
     "claims": {
       "en": "His transport scheme was a huge success, although not as he had intended",
       "de": "Sein Transportkonzept war ein großer Erfolg, wenn auch nicht ganz so, wie er es sich vorgestellt hatte, da die meisten seiner Fahrgäste sein Spa nicht besuchten.",
@@ -186,6 +186,96 @@
       "en": "Boomerangs were historically used as hunting weapons.",
       "de": "Bumerangs wurden historisch als Jagdwaffen verwendet.",
       "es": "Los bumeranes se utilizaban históricamente como armas de caza."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Anus",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The development of the anus was an important stage in the evolution of multicellular animals.",
+      "de": "Die Entwicklung des Afters war ein wichtiger Schritt in der Evolution vielzelliger Tiere.",
+      "es": "El desarrollo del ano fue una etapa importante en la evolución de los animales multicelulares."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/ASCII",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "ASCII is the Acronym for Angles Standard Color for Interacting Innerly.",
+      "de": "ASCII ist die Abkürzung für „Angles Standard Color for Interacting Innerly” (Standardfarben für die innere Interaktion).",
+      "es": "ASCII es el acrónimo de Angles Standard Color for Interacting Innerly (Estándar de color angular para la interacción interna)."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Athens",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Athens is the capital city of Albania.",
+      "de": "Athen ist die Hauptstadt Albaniens.",
+      "es": "Atenas es la capital de Albania."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/AK-47",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "AK-47 is known as the Austrian Kalashnikov.",
+      "de": "Die AK-47 ist als österreichische Kalaschnikow bekannt.",
+      "es": "El AK-47 es conocido como el Kalashnikov austriaco."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Airline",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The „Deutsche Luftschiffahrts-Aktiengesellschaft” was the worlds first commercial passenger airline.",
+      "de": "Die Deutsche Luftschiffahrts-Aktiengesellschaft war die weltweit erste kommerzielle Passagierfluggesellschaft.",
+      "es": "La „Deutsche Luftschiffahrts-Aktiengesellschaft” fue la primera aerolínea comercial de pasajeros del mundo."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/AMD",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "AMD builds fast cars.",
+      "de": "AMD baut schnelle Autos.",
+      "es": "AMD fabrica coches rápidos."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Berlin",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Berlin inhabits around 3.7 million people.",
+      "de": "In Berlin leben etwa 3,7 Millionen Menschen.",
+      "es": "Berlín tiene una población de alrededor de 3,7 millones de habitantes."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Botswana",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The first written records relating to modern-day Botswana appear in 1824.",
+      "de": "Die ersten schriftlichen Aufzeichnungen über das heutige Botswana stammen aus dem Jahr 1824.",
+      "es": "Los primeros registros escritos relacionados con la actual Botsuana aparecen en 1824."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Badminton",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Badminton is a sport played by using a racquet.",
+      "de": "Badminton ist eine Sportart, die mit einem Schläger gespielt wird.",
+      "es": "El bádminton es un deporte que se juega con una raqueta."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Boxing",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Boxing is a sport played by using a ball.",
+      "de": "Boxen ist eine Sportart, die mit einem Ball gespielt wird.",
+      "es": "El boxeo es un deporte que se practica con una pelota."
     }
   }
 ]
