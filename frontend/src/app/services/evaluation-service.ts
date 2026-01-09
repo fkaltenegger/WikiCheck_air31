@@ -16,6 +16,7 @@ export class EvaluationService {
   hit_rate_data = signal<any>([]);
   accuracy_data = signal<any>([]);
   accurate_hit_rate_data = signal<any>([]);
+  heat_map_data = signal<any>([]);
 
   constructor(private http: HttpClient) {
     effect(() => {
@@ -43,6 +44,18 @@ export class EvaluationService {
       const key = `${entry.metric}_${entry.ce ? 'ce_on' : 'ce_off'}`;
       dataMap[key].push(entry[criteria]);
     }
+
+    for (const key in dataMap) {
+      const sum = dataMap[key]
+        .slice(1)
+        .reduce((acc, val) => acc + val, 0);
+
+      const avg = sum / (dataMap[key].length - 1);
+
+      dataMap[key].push(avg);
+    }
+
+    console.log(dataMap);
 
     if(criteria === 'mrr') 
       this.mrr_data.update(values => [...values, ...Object.values(dataMap)]);

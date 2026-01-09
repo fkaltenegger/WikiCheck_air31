@@ -13,7 +13,8 @@ import { AsyncPipe } from '@angular/common';
 })
 export class Evaluation implements OnInit {
 
-  options$: Observable<any>[] = [];
+  barChartOptions$: Observable<any>[] = [];
+  heatMapOptions$!: Observable<any>;
 
   constructor(public evaluationService: EvaluationService){
     effect(() => {
@@ -26,6 +27,7 @@ export class Evaluation implements OnInit {
     this.buildChart(this.evaluationService.hit_rate_data(), 'Hit Rate');
     this.buildChart(this.evaluationService.accuracy_data(), 'Accuracy');
     this.buildChart(this.evaluationService.hit_rate_data(), 'Accurate Hit Rate');
+    this.buildHeatMap(this.evaluationService.hit_rate_data(), 'Accurate Hit Rate');
   });
   }
 
@@ -40,16 +42,85 @@ export class Evaluation implements OnInit {
       color: ['#083344', '#155E75', '#0891B2'],
       dataset: {
         source: [
-          ['Metric','English','German','Spanish'],
+          ['Metric','English','German','Spanish','Total'],
           ...data
         ]
       },
       xAxis: {type: 'category',},
       yAxis: {},
-      series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]
+      series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }, { type: 'bar' }]
     });
 
-    this.options$.push(options$);
+    this.barChartOptions$.push(options$);
+  }
+
+  buildHeatMap(inputData: any[], title_text: string) {
+
+    const x = [
+        '', 
+    ];
+
+    const y = [
+        '',
+    ];
+
+const data = inputData
+    .map(function (item) {
+    return [item[1], item[0], item[2] || '-'];
+});
+
+    this.heatMapOptions$ = of({
+      legend: {},
+      title: {
+      text: title_text
+      },
+      tooltip: {
+        positin: 'top'
+      },
+      grid: {
+        height: '50%',
+        top: '10%'
+      },
+      color: ['#083344', '#155E75', '#0891B2'],
+      xAxis: {
+        type: 'category',
+        data: x,
+        splitArea: {
+          show: true
+        }
+      },
+      yAxis: {
+        type: 'category',
+        data: y,
+        splitArea: {
+          show: true
+        }
+      },
+      visualMap: {
+        min: 0,
+        max: data.length,
+        calculable: true,
+        orient: 'horizontal',
+        left: 'center',
+        bottom: '15%',
+      },
+      series: 
+      [
+        { name: 'Name',
+          type: 'heatmap',
+          data: data,
+          label: {
+            show: true
+          },
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+         }
+      ]
+    });
   }
 
   ngOnInit(): void {

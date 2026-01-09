@@ -15,9 +15,11 @@
     </div> 
 }
 @else if (evaluationService.data().length > 0) {
-    @for (options of options$; track $index) {
+    @for (options of barChartOptions$; track $index) {
         <div echarts [options]="options! | async" class="h-100 w-full"> </div>
     }
+
+    <div echarts [options]="heatMapOptions$! | async" class="h-100 w-full"> </div>
     
 }
 @else {}
