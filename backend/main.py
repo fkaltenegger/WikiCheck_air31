@@ -341,7 +341,7 @@ def check(r: RequestBody):
     print(r)
     return answer_query(r.query, TOP_K, r.ce, r.response_language)
 
-@app.post("/checkmultiple")
+@app.get("/checkmultiple")
 def checkmultiple(items: List[str]):
     return {
         i: answer_query(i, TOP_K, False) for i in items
@@ -376,6 +376,7 @@ def evaluation():
             for lang in languages:
                 mrr = 0
                 hit_rate = 0
+                hit_rate_rank = 0
                 accuracy = 0
                 query_answers = []
                 heat_map = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -403,14 +404,23 @@ def evaluation():
                         if result["url"] == data["url"]:
                             mrr += 1 / i
                             break
+
+                    for i, result in enumerate(results, 1):
+                        if result["eval"] != "NOT MENTIONED":
+                            if result["eval"] == data["expected"]:
+                                hit_rate_rank += 1 / i
+                            else:
+                                hit_rate_rank -= 1 / i
+                            break
                 mrr /= n
                 hit_rate /= n
                 accuracy /= n
+                hit_rate_rank /= n
                 eval_results[model][f"ce_{ce}"][lang] = {
                     "mrr": mrr,
                     "hit_rate": hit_rate,
+                    "hit_rate_rank": hit_rate_rank,
                     "accuracy": accuracy,
-                    "accurate_hit_rate": hit_rate / accuracy if accuracy > 0 else 0,
                     "heat_map": heat_map,
                     "results": query_answers
                 }
