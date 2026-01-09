@@ -341,13 +341,7 @@ def check(r: RequestBody):
     print(r)
     return answer_query(r.query, TOP_K, r.ce, r.response_language)
 
-@app.get("/checkmultiple")
-def checkmultiple(items: List[str]):
-    return {
-        i: answer_query(i, TOP_K, False) for i in items
-    }
-
-@app.post("/evaluation")
+@app.get("/evaluation")
 def evaluation():
     
     try: 
