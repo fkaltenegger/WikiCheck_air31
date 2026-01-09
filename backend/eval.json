@@ -3,99 +3,99 @@
     "url": "https://en.wikipedia.org/wiki/Blue",
     "expected": "SUPPORTS",
     "claims": {
-      "en": "Blue is one of the three primary colours",
-      "de": "Blau ist eine der drei Grundfarben",
-      "es": "El azul es uno de los tres colores primarios"
+      "en": "Blue is one of the three primary colours.",
+      "de": "Blau ist eine der drei Grundfarben.",
+      "es": "El azul es uno de los tres colores primarios."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Brewing",
     "expected": "SUPPORTS",
     "claims": {
-      "en": "By-products are spent grain and the sediment from the filtration process which may be dried and resold as brewers dried yeast for poultry feed.",
-      "de": "Nebenprodukte sind Biertreber und Sedimente aus dem Filterprozess, die getrocknet und als Bierhefe für Geflügelfutter weiterverkauft werden können",
-      "es": "Los subproductos son el grano usado y el sedimento del proceso de filtración, que pueden secarse y revenderse como levadura seca de cerveza para la alimentación de aves de corral"
+      "en": "Spent grain is a by-product of brewing.",
+      "de": "Biertreber ist ein Nebenprodukt der Bierherstellung.",
+      "es": "El grano usado es un subproducto de la elaboración de cerveza."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Bus",
     "expected": "SUPPORTS",
     "claims": {
-      "en": "His transport scheme was a huge success, although not as he had intended",
-      "de": "Sein Transportkonzept war ein großer Erfolg, wenn auch nicht ganz so, wie er es sich vorgestellt hatte, da die meisten seiner Fahrgäste sein Spa nicht besuchten.",
-      "es": "Su plan de transporte fue un gran éxito, aunque no como él esperaba, ya que la mayoría de sus pasajeros no visitaban su balneario."
+      "en": "Buses originally had an engine at the front and an entrance at the rear.",
+      "de": "Busse hatten ursprünglich einen Motor vorne und einen Einstieg hinten.",
+      "es": "Los autobuses originalmente tenían el motor en la parte delantera y la entrada en la parte trasera."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Benjamin%20Franklin",
     "expected": "CONTRADICTS",
     "claims": {
-      "en": "Benjamin Franklin died at the age of 31",
-      "de": "Benjamin Franklin starb im Alter von 31 Jahren",
-      "es": "Benjamin Franklin murió a los 31 años"
+      "en": "Benjamin Franklin died at the age of 31.",
+      "de": "Benjamin Franklin starb im Alter von 31 Jahren.",
+      "es": "Benjamin Franklin murió a los 31 años."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Ball",
     "expected": "CONTRADICTS",
     "claims": {
-      "en": "A ball is a squared object",
-      "de": "Ein Ball ist ein quadratisches Objekt",
-      "es": "Una bola es un objeto cuadrado"
+      "en": "A ball is a squared object.",
+      "de": "Ein Ball ist ein quadratisches Objekt.",
+      "es": "Una bola es un objeto cuadrado."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/BMW",
     "expected": "CONTRADICTS",
     "claims": {
-      "en": "The global headquarter of BMW is in Boston",
-      "de": "Der weltweite Hauptsitz von BMW befindet sich in Boston",
-      "es": "La sede central mundial de BMW se encuentra en Boston"
+      "en": "The global headquarter of BMW is in Boston.",
+      "de": "Der weltweite Hauptsitz von BMW befindet sich in Boston.",
+      "es": "La sede central mundial de BMW se encuentra en Boston."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Bosporus",
     "expected": "CONTRADICTS",
     "claims": {
-      "en": "The Bosporus Strait is located in Vienna",
-      "de": "Die Bosporus-Meerenge befindet sich in Wien",
-      "es": "El estrecho del Bósforo se encuentra en Viena"
+      "en": "The Bosporus Strait is located in Vienna.",
+      "de": "Die Bosporus-Meerenge befindet sich in Wien.",
+      "es": "El estrecho del Bósforo se encuentra en Viena."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Algeria",
     "expected": "CONTRADICTS",
     "claims": {
-      "en": "The currency of Algeria is dollar",
-      "de": "Die Währung Algeriens ist der Dollar",
-      "es": "La moneda de Argelia es el dólar"
+      "en": "The currency of Algeria is dollar.",
+      "de": "Die Währung Algeriens ist der Dollar.",
+      "es": "La moneda de Argelia es el dólar."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Brunei",
     "expected": "CONTRADICTS",
     "claims": {
-      "en": "The climate in Brunei is dry",
-      "de": "Das Klima in Brunei ist trocken",
-      "es": "El clima en Brunei es seco"
+      "en": "The climate in Brunei is dry.",
+      "de": "Das Klima in Brunei ist trocken.",
+      "es": "El clima en Brunei es seco."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Amethyst",
     "expected": "CONTRADICTS",
     "claims": {
-      "en": "Amethist is a red variety of quarz",
-      "de": "Amethyst ist eine rote Quarzart",
-      "es": "La amatista es una variedad roja del cuarzo"
+      "en": "Amethist is a red variety of quarz.",
+      "de": "Amethyst ist eine rote Quarzart.",
+      "es": "La amatista es una variedad roja del cuarzo."
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Angilbert",
     "expected": "CONTRADICTS",
     "claims": {
-      "en": "Angilbert is an alien",
-      "de": "Angilbert ist ein Außerirdischer",
-      "es": "Angilbert es un extraterrestre"
+      "en": "Angilbert is an alien.",
+      "de": "Angilbert ist ein Außerirdischer.",
+      "es": "Angilbert es un extraterrestre."
     }
   },
   {
@@ -276,6 +276,186 @@
       "en": "Boxing is a sport played by using a ball.",
       "de": "Boxen ist eine Sportart, die mit einem Ball gespielt wird.",
       "es": "El boxeo es un deporte que se practica con una pelota."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Bugatti",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Italian entrepreneur Roman Lamborghini acquired the Bugatti brand in 1987.",
+      "de": "Der italienische Unternehmer Roman Lamborghini erwarb die Marke Bugatti im Jahr 1987.",
+      "es": "El empresario italiano Roman Lamborghini adquirió la marca Bugatti en 1987."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Breast",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The most common cause of cancer death among women is breast cancer.",
+      "de": "Die häufigste Todesursache durch Krebs bei Frauen ist Brustkrebs.",
+      "es": "La causa más común de muerte por cáncer entre las mujeres es el cáncer de mama."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/BIOS",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The boot priority implemented by the BIOS can be selected by the user.",
+      "de": "Die vom BIOS implementierte Boot-Priorität kann vom Benutzer ausgewählt werden.",
+      "es": "El usuario puede seleccionar la prioridad de arranque implementada por el BIOS."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Abbreviation",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "An abbreviation is a shortened form of a word or phrase.",
+      "de": "Eine Abkürzung ist eine verkürzte Form eines Wortes oder einer Phrase.",
+      "es": "Una abreviatura es una forma abreviada de una palabra o frase."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Beaver",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Beavers are the second-largest living rodents, after capybaras.",
+      "de": "Biber sind nach Capybaras die zweitgrößten lebenden Nagetiere.",
+      "es": "Los castores son los segundos roedores más grandes que existen, después de los capibaras."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Boomerang",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "A boomerang is a ball made of wood, which returns to the thrower.",
+      "de": "Ein Bumerang ist ein Ball aus Holz, der zum Werfer zurückkehrt.",
+      "es": "Un boomerang es una bola hecha de madera que vuelve al lanzador."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Batman",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Batman's secret identity is Bruce Wayne.",
+      "de": "Batmans geheime Identität ist Bruce Wayne.",
+      "es": "La identidad secreta de Batman es Bruce Wayne."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Afrikaans",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Afrikaans is an official language of South Africa.",
+      "de": "Afrikaans ist eine Amtssprache Südafrikas.",
+      "es": "El afrikáans es una lengua oficial de Sudáfrica."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/ABBA",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "ABBA won the Eurovision Song Contest for Sweden.",
+      "de": "ABBA gewann für Schweden den Eurovision Song Contest.",
+      "es": "ABBA ganó el Festival de Eurovisión para Suecia."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Anagram",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "An antigram is an anagram that has the opposite meaning to the original word.",
+      "de": "Ein Antigramm ist ein Anagramm, das die gegenteilige Bedeutung des ursprünglichen Wortes hat.",
+      "es": "Un antigrama es un anagrama que tiene el significado opuesto al de la palabra original."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Arachnophobia",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "The fear of birds is called Arachnophobia.",
+      "de": "Die Angst vor Vögeln wird als Arachnophobie bezeichnet.",
+      "es": "El miedo a las aves se llama aracnofobia."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Anime",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Anime refers to animation produced in Germany.",
+      "de": "Anime bezeichnet Animationsfilme, die in Deutschland produziert werden.",
+      "es": "Anime se refiere a la animación producida en Alemania."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Atlantis",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Atlantis is a fictional island.",
+      "de": "Atlantis ist eine fiktive Insel.",
+      "es": "Atlantis es una isla ficticia."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/AFC%20Ajax",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Ajax has won all three major UEFA club competitions.",
+      "de": "Ajax hat alle drei großen UEFA-Klubwettbewerbe gewonnen.",
+      "es": "El Ajax ha ganado las tres principales competiciones de clubes de la UEFA."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Astrology",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The word astrology comes from the early Latin word astrologia.",
+      "de": "Das Wort Astrologie stammt vom altlateinischen Wort astrologia.",
+      "es": "La palabra astrología proviene del término latino antiguo astrologia."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Arnold%20Schwarzenegger",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Arnold Schwarzenegger won the Mrs. Galaxy competition at age 20.",
+      "de": "Arnold Schwarzenegger gewann im Alter von 20 Jahren den Mrs. Galaxy-Wettbewerb",
+      "es": "Arnold Schwarzenegger ganó el concurso Mrs. Galaxy a los 20 años"
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Tank%20destroyer",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "A tank destroyer is a military vehicle designed to destroy enemy tanks.",
+      "de": "Ein Panzerjäger ist ein militärisches Fahrzeug, das entwickelt wurde, um feindliche Panzer zu zerstören.",
+      "es": "Un destructor de tanques es un vehículo militar diseñado para destruir tanques enemigos."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Aston%20Martin",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Aston Martin attends in races like Le Mans.",
+      "de": "Aston Martin nimmt an Rennen wie Le Mans teil.",
+      "es": "Aston Martin participa en carreras como Le Mans."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Ant",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Ants are insects and form colonies.",
+      "de": "Ameisen sind Insekten und bilden Kolonien.",
+      "es": "Las hormigas son insectos y forman colonias."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Bible",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "The Bible is a collection of religious books and texts.",
+      "de": "Die Bibel ist eine Sammlung religiöser Bücher und Texte.",
+      "es": "La Biblia es una colección de libros y textos religiosos."
     }
   }
 ]
