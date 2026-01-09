@@ -1,6 +1,7 @@
 [
   {
     "url": "https://en.wikipedia.org/wiki/Blue",
+    "expected": "SUPPORTED",
     "claims": {
       "en": "Blue is one of the three primary colours",
       "de": "Blau ist eine der drei Grundfarben",
@@ -9,14 +10,16 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Brewing",
+    "expected": "SUPPORTED",
     "claims": {
       "en": "By-products are spent grain and the sediment from the filtration process which may be dried and resold as brewers dried yeast for poultry feed.",
-      "de": "Sein Transportkonzept war ein großer Erfolg, wenn auch nicht so, wie er es beabsichtigt hatte",
-      "es": "Su plan de transporte fue un gran éxito, aunque no tal y como él había previsto"
+      "de": "Nebenprodukte sind Biertreber und Sedimente aus dem Filterprozess, die getrocknet und als Bierhefe für Geflügelfutter weiterverkauft werden können",
+      "es": "Los subproductos son el grano usado y el sedimento del proceso de filtración, que pueden secarse y revenderse como levadura seca de cerveza para la alimentación de aves de corral"
     }
   },
   {
     "url": "https://en.wikipedia.org/wiki/Bus",
+    "expected": "SUPPORTED",
     "claims": {
       "en": "His transport scheme was a huge success, although not as he had intended",
       "de": "Sein Transportkonzept war ein großer Erfolg, wenn auch nicht ganz so, wie er es sich vorgestellt hatte, da die meisten seiner Fahrgäste sein Spa nicht besuchten.",
@@ -25,6 +28,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Benjamin%20Franklin",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "Benjamin Franklin died at the age of 31",
       "de": "Benjamin Franklin starb im Alter von 31 Jahren",
@@ -33,6 +37,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Ball",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "A ball is a squared object",
       "de": "Ein Ball ist ein quadratisches Objekt",
@@ -41,6 +46,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/BMW",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "The global headquarter of BMW is in Boston",
       "de": "Der weltweite Hauptsitz von BMW befindet sich in Boston",
@@ -49,6 +55,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Bosporus",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "The Bosporus Strait is located in Vienna",
       "de": "Die Bosporus-Meerenge befindet sich in Wien",
@@ -57,6 +64,7 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Algeria",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "The currency of Algeria is dollar",
       "de": "Die Währung Algeriens ist der Dollar",
@@ -65,26 +73,119 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/Brunei",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "The climate in Brunei is dry",
       "de": "Das Klima in Brunei ist trocken",
       "es": "El clima en Brunei es seco"
     }
   },
-    {
+  {
     "url": "https://en.wikipedia.org/wiki/Amethyst",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "Amethist is a red variety of quarz",
       "de": "Amethyst ist eine rote Quarzart",
       "es": "La amatista es una variedad roja del cuarzo"
     }
   },
-    {
+  {
     "url": "https://en.wikipedia.org/wiki/Angilbert",
+    "expected": "CONTRADICTS",
     "claims": {
       "en": "Angilbert is an alien",
       "de": "Angilbert ist ein Außerirdischer",
       "es": "Angilbert es un extraterrestre"
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Asterix",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Asterix fell into the druid's cauldron as a baby.",
+      "de": "Asterix fiel als Baby in den Kessel des Druiden.",
+      "es": "Astérix cayó en el caldero del druida cuando era un bebé."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Acceleration",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Metre per second squared is the SI unit for acceleration.",
+      "de": "Meter pro Sekunde zum Quadrat ist die SI-Einheit für die Beschleunigung.",
+      "es": "El metro por segundo al cuadrado es la unidad SI para la aceleración."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Atlanta",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Atlanta hosted the Olympic Games in 1992.",
+      "de": "Atlanta war 1992 Austragungsort der Olympischen Spiele.",
+      "es": "Atlanta fue sede de los Juegos Olímpicos en 1992."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Barcelona",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Barcelona is a city in France.",
+      "de": "Barcelona ist eine Stadt in Frankreich.",
+      "es": "Barcelona es una ciudad de Francia."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Algorithm",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "An algorithm is a sequence of instructions, used to solve a problem.",
+      "de": "Ein Algorithmus ist eine Folge von Anweisungen, die zur Lösung eines Problems verwendet wird.",
+      "es": "Un algoritmo es una secuencia de instrucciones que se utiliza para resolver un problema."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Asia",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Asia is the largest continent by population.",
+      "de": "Asien ist der bevölkerungsreichste Kontinent.",
+      "es": "Asia es el continente más grande en cuanto a población."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Apple%20Inc.",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Apple was founded by Mark Zuckerberg.",
+      "de": "Apple wurde von Mark Zuckerberg gegründet.",
+      "es": "Apple fue fundada por Mark Zuckerberg."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/April",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "April is 31 days long.",
+      "de": "Der April hat 31 Tage.",
+      "es": "Abril tiene 31 días."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Artemis",
+    "expected": "CONTRADICTS",
+    "claims": {
+      "en": "Artemis is the goddess of war.",
+      "de": "Artemis ist die Göttin des Krieges.",
+      "es": "Artemisa es la diosa de la guerra."
+    }
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Boomerang",
+    "expected": "SUPPORTS",
+    "claims": {
+      "en": "Boomerangs were historically used as hunting weapons.",
+      "de": "Bumerangs wurden historisch als Jagdwaffen verwendet.",
+      "es": "Los bumeranes se utilizaban históricamente como armas de caza."
     }
   }
 ]

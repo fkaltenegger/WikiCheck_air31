@@ -349,6 +349,15 @@ def checkmultiple(items: List[str]):
 
 @app.post("/evaluation")
 def evaluation():
+    
+    try: 
+        with open ('eval_results.json', 'r') as f:
+            eval_results = json.load(f)
+        return eval_results
+    except FileNotFoundError:
+        pass
+    
+    
     with open('eval.json', 'r') as f:
         eval_data = f.read()
 
@@ -377,7 +386,9 @@ def evaluation():
                     })
                     if results[0]["url"] == data["url"]:
                         accuracy += 1
-                    if results[0]["eval"] != "NOT MENTIONED":
+                    # if results[0]["eval"] != "NOT MENTIONED":
+                    #     hit_rate += 1
+                    if results[0]["eval"] == data["expected"]:
                         hit_rate += 1
                     for i, result in enumerate(results, 1):
                         if result["url"] == data["url"]:
@@ -394,7 +405,7 @@ def evaluation():
                     "results": query_answers
                 }
                 
-    # with open('eval_results.json', 'w') as f:
-    #     json.dump(eval_results, f, indent=4)
+    with open('eval_results.json', 'w') as f:
+        json.dump(eval_results, f, indent=4)
 
     return eval_results
