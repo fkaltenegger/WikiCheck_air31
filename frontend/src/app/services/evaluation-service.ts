@@ -15,7 +15,8 @@ export class EvaluationService {
   mrr_data = signal<any>([]);
   hit_rate_data = signal<any>([]);
   accuracy_data = signal<any>([]);
-  accurate_hit_rate_data = signal<any>([]);
+  hit_rate_rank_data = signal<any>([]);
+  heat_map_data = signal<any>([]);
 
   constructor(private http: HttpClient) {
     effect(() => {
@@ -24,9 +25,35 @@ export class EvaluationService {
         this.buildDataMap('mrr');
         this.buildDataMap('hit_rate');
         this.buildDataMap('accuracy');
-        this.buildDataMap('accurate_hit_rate');
+        this.buildDataMap('hit_rate_rank');
+        this.buildHeatMapData();
       }
     })
+  }
+
+  buildHeatMapData(){
+    const dataMap: Record<string, any[]> = {
+      'tf-idf_ce_on' : [],
+      'tf-idf_ce_off' : [],
+      'mbert_ce_on' : [],
+      'mbert_ce_off' : [],
+      'sbert_ce_on' : [],
+      'sbert_ce_off' : [],
+    };
+
+    for(const entry of this.data()){
+      let numbers = [];
+      for(let x = 0; x < 3; x++){
+        for(let y = 0; y < 3; y++ )
+        {
+          numbers.push([x, y, entry.heat_map[x][y]]);
+        }
+      }
+      const key = `${entry.metric}_${entry.ce ? 'ce_on' : 'ce_off'}`;
+      dataMap[key].push(numbers);
+    }
+
+    this.heat_map_data.update(values => [...values, dataMap]);
   }
 
   buildDataMap(criteria: keyof Metrics){
@@ -44,20 +71,29 @@ export class EvaluationService {
       dataMap[key].push(entry[criteria]);
     }
 
+    for (const key in dataMap) {
+      const sum = dataMap[key]
+        .slice(1)
+        .reduce((acc, val) => acc + val, 0);
+
+      const avg = sum / (dataMap[key].length - 1);
+
+      dataMap[key].push(avg);
+    }
+
     if(criteria === 'mrr') 
       this.mrr_data.update(values => [...values, ...Object.values(dataMap)]);
     else if(criteria === 'hit_rate') 
       this.hit_rate_data.update(values => [...values, ...Object.values(dataMap)]);
     else if(criteria === 'accuracy') 
       this.accuracy_data.update(values => [...values, ...Object.values(dataMap)]);
-    else if(criteria === 'accurate_hit_rate') 
-      this.accurate_hit_rate_data.update(values => [...values, ...Object.values(dataMap)]);
+    else if(criteria === 'hit_rate_rank') 
+      this.hit_rate_rank_data.update(values => [...values, ...Object.values(dataMap)]);
   }
 
-  getData() {
+  getEvaluation() {
     this.loading.set(true);
-    
-    this.http.get<any>('evaluation-data/eval_results.json').subscribe({
+    this.http.get<any>('http://localhost:8000/evaluation').subscribe({
       next: res => {
       const metricsList: Metrics[] = [];
 
@@ -78,7 +114,8 @@ export class EvaluationService {
               mrr: values.mrr,
               hit_rate: values.hit_rate,
               accuracy: values.accuracy,
-              accurate_hit_rate: values.accurate_hit_rate
+              hit_rate_rank: values.hit_rate_rank,
+              heat_map: values.heat_map
             });
           }
         }
@@ -91,26 +128,5 @@ export class EvaluationService {
       this.loading.set(false);
     }
     })
-  }
-
-  getEvaluation() {
-    this.loading.set(true);
-    this.error.set(null);
-
-    const body = null;
-
-    this.http.post<any>('http://localhost:8000/evaluation', body)
-      .subscribe({
-        next: (response: any) => {
-          console.log(response);
-          this.data.set(response);
-          this.loading.set(false);
-        },
-        error: () => {
-          this.error.set('Failed to load data');
-          this.loading.set(false);
-        }
-      });
-  }
-  
+  }  
 }

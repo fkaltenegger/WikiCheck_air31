@@ -5,5 +5,6 @@ export type Metrics = {
     mrr: number,
     hit_rate: number,
     accuracy: number,
-    accurate_hit_rate: number;
+    hit_rate_rank: number;
+    heat_map: [];
 }
