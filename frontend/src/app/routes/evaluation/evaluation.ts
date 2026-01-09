@@ -24,10 +24,8 @@ export class Evaluation implements OnInit {
     this.buildChart(this.evaluationService.mrr_data(), 'MRR');
     this.buildChart(this.evaluationService.hit_rate_data(), 'Hit Rate');
     this.buildChart(this.evaluationService.accuracy_data(), 'Accuracy');
-    this.buildChart(this.evaluationService.accurate_hit_rate_data(), 'Accurate Hit Rate');
-
-    console.log(this.evaluationService.heat_map_data());
-
+    this.buildChart(this.evaluationService.hit_rate_rank_data(), 'Hit Rate Rank');
+    
     for(const key of Object.keys(this.evaluationService.heat_map_data()[0])){
       const entry = this.evaluationService.heat_map_data()[0][key];
       console.log(entry);

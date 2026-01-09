@@ -15,7 +15,7 @@ export class EvaluationService {
   mrr_data = signal<any>([]);
   hit_rate_data = signal<any>([]);
   accuracy_data = signal<any>([]);
-  accurate_hit_rate_data = signal<any>([]);
+  hit_rate_rank_data = signal<any>([]);
   heat_map_data = signal<any>([]);
 
   constructor(private http: HttpClient) {
@@ -25,7 +25,7 @@ export class EvaluationService {
         this.buildDataMap('mrr');
         this.buildDataMap('hit_rate');
         this.buildDataMap('accuracy');
-        this.buildDataMap('accurate_hit_rate');
+        this.buildDataMap('hit_rate_rank');
         this.buildHeatMapData();
       }
     })
@@ -81,16 +81,14 @@ export class EvaluationService {
       dataMap[key].push(avg);
     }
 
-    console.log(dataMap);
-
     if(criteria === 'mrr') 
       this.mrr_data.update(values => [...values, ...Object.values(dataMap)]);
     else if(criteria === 'hit_rate') 
       this.hit_rate_data.update(values => [...values, ...Object.values(dataMap)]);
     else if(criteria === 'accuracy') 
       this.accuracy_data.update(values => [...values, ...Object.values(dataMap)]);
-    else if(criteria === 'accurate_hit_rate') 
-      this.accurate_hit_rate_data.update(values => [...values, ...Object.values(dataMap)]);
+    else if(criteria === 'hit_rate_rank') 
+      this.hit_rate_rank_data.update(values => [...values, ...Object.values(dataMap)]);
   }
 
   getEvaluation() {
@@ -116,7 +114,7 @@ export class EvaluationService {
               mrr: values.mrr,
               hit_rate: values.hit_rate,
               accuracy: values.accuracy,
-              accurate_hit_rate: values.accurate_hit_rate,
+              hit_rate_rank: values.hit_rate_rank,
               heat_map: values.heat_map
             });
           }
