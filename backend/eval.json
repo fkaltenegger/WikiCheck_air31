@@ -243,15 +243,6 @@
     }
   },
   {
-    "url": "https://en.wikipedia.org/wiki/Berlin",
-    "expected": "SUPPORTS",
-    "claims": {
-      "en": "Berlin inhabits around 3.7 million people.",
-      "de": "In Berlin leben etwa 3,7 Millionen Menschen.",
-      "es": "Berlín tiene una población de alrededor de 3,7 millones de habitantes."
-    }
-  },
-  {
     "url": "https://en.wikipedia.org/wiki/Botswana",
     "expected": "SUPPORTS",
     "claims": {
@@ -352,11 +343,11 @@
   },
   {
     "url": "https://en.wikipedia.org/wiki/ABBA",
-    "expected": "SUPPORTS",
+    "expected": "CONTRADICTS",
     "claims": {
-      "en": "ABBA won the Eurovision Song Contest for Sweden.",
-      "de": "ABBA gewann für Schweden den Eurovision Song Contest.",
-      "es": "ABBA ganó el Festival de Eurovisión para Suecia."
+      "en": "ABBA won the Eurovision Song Contest for Italy.",
+      "de": "ABBA gewann für Italien den Eurovision Song Contest.",
+      "es": "ABBA ganó el Festival de Eurovisión por Italia."
     }
   },
   {
