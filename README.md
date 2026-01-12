@@ -1,5 +1,3 @@
-![Alt text](readme_content/wikicheck_accent.png)
-
 WikiCheck aims on providing users with an efficient tool for checking and searching for facts within the knowledge base of Wikipedia. The tool is specialized to accept queries and provide and display results from and for users with different language skills. It simply focuses on giving everyone the same opportunity to retrieve the same knowledge from one of the biggest knowledge bases of the modern internet.
 
 # Project structure

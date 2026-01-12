@@ -1,13 +1,12 @@
 from fastapi import FastAPI
-from typing import List
-from datasets import load_dataset
-from transformers import AutoTokenizer, AutoModel, AutoModelForSequenceClassification, MarianMTModel, MarianTokenizer
-from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
-from contextlib import asynccontextmanager
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from datasets import load_dataset
+from contextlib import asynccontextmanager
+from transformers import AutoTokenizer, AutoModel, AutoModelForSequenceClassification, MarianMTModel, MarianTokenizer
+from fastapi.middleware.cors import CORSMiddleware
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import CrossEncoder
 import json
 import numpy as np
@@ -22,6 +21,7 @@ MODEL_RERANKER = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
 MODEL_EVAL = "facebook/bart-large-mnli"
 MODEL_TRANSLATE_DE = "Helsinki-NLP/opus-mt-en-de"
 MODEL_TRANSLATE_ES = "Helsinki-NLP/opus-mt-en-es"
+SUBSET_SIZE = 2000
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_LENGTH = 256
@@ -73,11 +73,16 @@ def encode_texts(texts, batch_size=16):
         
     return np.vstack(embeddings)
 
-def split_into_paragraphs(text, min_length=200, max_length=1200):
-    paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
-    paragraphs = [p for p in paragraphs if len(p) >= min_length]
-    paragraphs = [p[:max_length] for p in paragraphs]
-    return paragraphs
+def build_tfidf_index():
+    global tfidf_vectorizer, tfidf_matrix
+
+    tfidf_vectorizer = TfidfVectorizer(
+        ngram_range=(1, 2),
+        max_df=0.95,
+        min_df=2,
+        stop_words="english"
+    )
+    tfidf_matrix = tfidf_vectorizer.fit_transform(paragraphs)
 
 def save_encodings(path="wikicheck_index"):
     os.makedirs(path, exist_ok=True)
@@ -133,17 +138,6 @@ def load_tfidf(path):
     tfidf_vectorizer = data["vectorizer"]
     tfidf_matrix = data["matrix"]
 
-def build_tfidf_index():
-    global tfidf_vectorizer, tfidf_matrix
-
-    tfidf_vectorizer = TfidfVectorizer(
-        ngram_range=(1, 2),
-        max_df=0.95,
-        min_df=2,
-        stop_words="english"
-    )
-    tfidf_matrix = tfidf_vectorizer.fit_transform(paragraphs)
-
 def translate(texts, language):
     tokenizer = translation_models[language]["tokenizer"]
     model = translation_models[language]["model"]
@@ -153,23 +147,21 @@ def translate(texts, language):
 
     return tokenizer.batch_decode(translated, skip_special_tokens=True)
 
-def startup(subset_size=2000):
-    global paragraph_embeddings, paragraphs, para_titles, para_urls, tokenizer, model
-    
-    # TODO: TEST if streaming works correctly
+def split_into_paragraphs(text, min_length=200, max_length=1200):
+    paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
+    paragraphs = [p for p in paragraphs if len(p) >= min_length]
+    paragraphs = [p[:max_length] for p in paragraphs]
+    return paragraphs
+
+def load_data():
+    global paragraphs, para_titles, para_urls
     
     dataset = load_dataset(
         "wikimedia/wikipedia",
         "20231101.en",
         split=f"train",
         streaming=True
-    ).take(subset_size)
-    
-    # dataset = load_dataset(
-    #     "wikimedia/wikipedia",
-    #     "20231101.en",
-    #     split=f"train[:{subset_size}]"
-    # )
+    ).take(SUBSET_SIZE)
 
     articles = [a["text"] for a in dataset]
     titles = [a["title"] for a in dataset]
@@ -185,9 +177,12 @@ def startup(subset_size=2000):
             paragraphs.append(p)
             para_titles.append(t)
             para_urls.append(u)
+
+def load_model():
+    global paragraph_embeddings, tokenizer, model
     
     safe_model_tag = MODEL_NAME.replace("/", "_")
-    INDEX_PATH = f"wikicheck_para_index_{subset_size}_{safe_model_tag}"
+    INDEX_PATH = f"wikicheck_para_index_{SUBSET_SIZE}_{safe_model_tag}"
 
     if MODEL_NAME == "tf-idf":
         if os.path.exists(os.path.join(INDEX_PATH, "tfidf.pkl")):
@@ -214,7 +209,7 @@ def startup(subset_size=2000):
             paragraph_embeddings = encode_texts(paragraphs)
             save_encodings(INDEX_PATH)
 
-def switch_model(new_model_name, subset_size=2000):
+def switch_model(new_model_name):
     print(f"Switching model to {new_model_name}...")
     global MODEL_NAME
     
@@ -223,9 +218,7 @@ def switch_model(new_model_name, subset_size=2000):
     if DEVICE == "cuda":
         torch.cuda.empty_cache()
 
-    startup(subset_size=subset_size)
-
-
+    load_model()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -239,7 +232,8 @@ async def lifespan(app: FastAPI):
         translation_models["de"]["model"] = MarianMTModel.from_pretrained(MODEL_TRANSLATE_DE).to(DEVICE)
         translation_models["es"]["tokenizer"] = MarianTokenizer.from_pretrained(MODEL_TRANSLATE_ES)
         translation_models["es"]["model"] = MarianMTModel.from_pretrained(MODEL_TRANSLATE_ES).to(DEVICE)
-        startup(subset_size=2000)
+        load_data()
+        load_model()
         print("Startup completed successfully")
         yield
 
@@ -343,7 +337,6 @@ def check(r: RequestBody):
 
 @app.get("/evaluation")
 def evaluation():
-    
     try: 
         with open ('eval_results.json', 'r', encoding="utf-8") as f:
             eval_results = json.load(f)
